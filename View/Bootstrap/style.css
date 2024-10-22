@@ -1,0 +1,111 @@
+body {
+    background: linear-gradient(135deg, #f41c1c, #b06ab3);
+    height: 100vh;
+    color: white;
+    overflow: hidden;
+}
+
+.login-container {
+    background-color: #ffffff;
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+    color: #333;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.login-container h3 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.btn-login {
+    background-color: #ffcc00;
+    color: #fff;
+    border: none;
+}
+
+.btn-login:hover {
+    background-color:#f70000;
+}
+
+.form-control {
+    border-radius: 10px;
+}
+
+.form-label {
+    color: #666;
+}
+
+.background-illustration {
+    border-radius: 25px;
+    background: url(https://img.freepik.com/vector-gratis/camion-transporte-rojo-dibujado-mano_23-2149161530.jpg?t=st=1729562900~exp=1729566500~hmac=af61954cbac6667ca28d490cf8f4ccad3a3fb9062cfc231daa42fb7bf110b4e1&w=996) center center / cover no-repeat; 
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+}
+
+
+.lato-thin {
+    font-family: "Lato", sans-serif;
+    font-weight: 100;
+    font-style: normal;
+}
+
+.lato-light {
+    font-family: "Lato", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
+
+.lato-regular {
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.lato-bold {
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.lato-black {
+    font-family: "Lato", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+}
+
+.lato-thin-italic {
+    font-family: "Lato", sans-serif;
+    font-weight: 100;
+    font-style: italic;
+}
+
+.lato-light-italic {
+    font-family: "Lato", sans-serif;
+    font-weight: 300;
+    font-style: italic;
+}
+
+.lato-regular-italic {
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: italic;
+}
+
+.lato-bold-italic {
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    font-style: italic;
+}
+
+.lato-black-italic {
+    font-family: "Lato", sans-serif;
+    font-weight: 900;
+    font-style: italic;
+}
