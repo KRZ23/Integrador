@@ -6,14 +6,15 @@ body {
 }
 
 .login-container {
-    background-color: #ffffff;
+    background-color: transparent;
     border-radius: 15px;
     padding: 40px;
+    border: 2px solid white;
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .title {
-    color: #333;
+    color: #000000;
     font-size: 1.8rem;
     margin-bottom: 10px;
 }
@@ -38,15 +39,18 @@ body {
 }
 
 .form-label {
-    color: #666;
+    color: #ffffff;
 }
 
 .background-illustration {
-    border-radius: 25px;
-    background: url(https://img.freepik.com/vector-gratis/camion-transporte-rojo-dibujado-mano_23-2149161530.jpg?t=st=1729562900~exp=1729566500~hmac=af61954cbac6667ca28d490cf8f4ccad3a3fb9062cfc231daa42fb7bf110b4e1&w=996) center center / cover no-repeat; 
+    border-top-right-radius: 200px;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 200px;
+    border-bottom-right-radius: 50px;
+    background: url('View/img/img.png') center center / cover no-repeat; 
     width: 100%;
     height: 100%;
-    background-size: cover;
+    background-size: contain;
 }
 
 
