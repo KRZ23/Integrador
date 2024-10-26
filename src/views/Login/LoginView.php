@@ -15,28 +15,49 @@
 </head>
 
 <body>
-<div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6 col-lg-4">
-                <h2 class="text-center mt-4">Registro de Usuario</h2>
-                <form action="#" method="POST">
-                    <div class="mb-3">
-                        <label for="nombreUsuario" class="form-label">Nombre de Usuario</label>
-                        <input type="text" class="form-control" id="nombreUsuario" name="nombreUsuario" placeholder="Ingresa tu nombre" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="correo" class="form-label">Correo Electrónico</label>
-                        <input type="email" class="form-control" id="correo" name="correo" placeholder="Ingresa tu correo" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="contrasena" class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="Ingresa una contraseña" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Registrarse</button>
-                </form>
+    <header>
+        <div class="text-center">
+            <h1 class="lato-black">Piedra de agua</h1>
+        </div>
+    </header>
+    <div class="container-fluid d-flex justify-content-center align-items-center vh-100">
+        <div class="row w-100">
+            <!-- Columna con la imagen -->
+            <div class="col-md-6 d-none d-md-block">
+                <div class="background-illustration"></div>
+            </div>
+            <!-- Columna con el formulario -->
+            <div class="col-md-6 d-flex flex-column justify-content-center align-items-center">
+                <div class="login-container">
+                    <h3 class="text-center">Iniciar sesión</h3>
+                    <form>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="username"
+                                placeholder="Ingresa tu nombre de usuario">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">contraseña</label>
+                            <input type="password" class="form-control" id="password"
+                                placeholder="Ingresa tu contraseña">
+                        </div>
+                        <div class="form-check mb-3">
+                            <input type="checkbox" class="form-check-input" id="rememberMe">
+                            <label class="form-check-label" for="rememberMe">Recordarme</label>
+                        </div>
+                        <button type="submit" class="btn btn-login w-100">Ingresar</button>
+                        <div class="text-center mt-3">
+                            <a href="#" class="text-decoration-none">Olvidé mi contraseña</a>
+                        </div>
+                        <div class="text-center mt-2">
+                            <span>¿Nuevo aquí? <a href="#" class="text-decoration-none">Regístrate</a></span>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+
     <script src="/public/js/Bootstrap_js/bootstrap.min.js"></script>
 </body>
 
