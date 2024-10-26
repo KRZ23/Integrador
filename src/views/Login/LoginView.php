@@ -14,47 +14,35 @@
         rel="stylesheet">
 </head>
 
-<body>
-    <header>
-        <div class="text-center">
-            <h1 class="lato-black">Piedra de agua</h1>
-        </div>
-    </header>
-    <div class="container-fluid d-flex justify-content-center align-items-center vh-100">
-        <div class="row w-100">
-            <!-- Columna con la imagen -->
-            <div class="col-md-6 d-none d-md-block">
-                <div class="background-illustration"></div>
-            </div>
-            <!-- Columna con el formulario -->
-            <div class="col-md-6 d-flex flex-column justify-content-center align-items-center">
-                <div class="login-container">
-                    <h3 class="text-center">Iniciar sesión</h3>
-                    <form>
-                        <div class="mb-3">
-                            <label for="username" class="form-label">Nombre</label>
-                            <input type="text" class="form-control" id="username"
-                                placeholder="Ingresa tu nombre de usuario">
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">contraseña</label>
-                            <input type="password" class="form-control" id="password"
-                                placeholder="Ingresa tu contraseña">
-                        </div>
-                        <div class="form-check mb-3">
-                            <input type="checkbox" class="form-check-input" id="rememberMe">
-                            <label class="form-check-label" for="rememberMe">Recordarme</label>
-                        </div>
-                        <button type="submit" class="btn btn-login w-100">Ingresar</button>
-                        <div class="text-center mt-3">
-                            <a href="#" class="text-decoration-none">Olvidé mi contraseña</a>
-                        </div>
-                        <div class="text-center mt-2">
-                            <span>¿Nuevo aquí? <a href="#" class="text-decoration-none">Regístrate</a></span>
-                        </div>
-                    </form>
+<body class="d-flex justify-content-center align-items-center vh-100">
+    <div class="container-login">
+        <!-- Título de cabecera -->
+        <header class="header-text">Piedra de Agua</header>
+
+        <!-- Formulario de inicio de sesión -->
+        <div class="login-container">
+            <h3 class="text-center mb-4">Iniciar sesión</h3>
+            <form action="../../Controller/AccsesUsers.php" class="login-form">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Nombre de usuario</label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Ingresa tu nombre de usuario" required>
                 </div>
-            </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Ingresa tu contraseña" required>
+                </div>
+                <div class="form-check mb-3">
+                    <input type="checkbox" class="form-check-input" id="rememberMe">
+                    <label class="form-check-label" for="rememberMe">Recordarme</label>
+                </div>
+                <button type="submit" class="btn btn-login w-100">Ingresar</button>
+                <div class="text-center mt-3">
+                    <a href="#" class="text-decoration-none">Olvidé mi contraseña</a>
+                </div>
+                <div class="text-center mt-2">
+                    <span>¿Nuevo aquí? <a href="#" class="text-decoration-none">Regístrate</a></span>
+                </div>
+            </form>
         </div>
     </div>
 
