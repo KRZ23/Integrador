@@ -45,7 +45,6 @@
             </form>
         </div>
     </div>
-
     <script src="/public/js/Bootstrap_js/bootstrap.min.js"></script>
 </body>
 
