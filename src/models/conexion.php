@@ -19,7 +19,7 @@ class conexion
 
     public function getUser($usuario, $password)
     {
-        $query = $this->con->query("SELECT * FROM usuarios WHERE correo='" . $usuario . "' AND contrasena='" . $password . "'"); //Sentancia para buscar los usuarios en la base de datos
+        $query = $this->con->query("SELECT * FROM cliente WHERE correo_cliente='" . $usuario . "' AND contrasena='" . $password . "'"); //Sentancia para buscar los usuarios en la base de datos
 
 
         $retorno = [];
