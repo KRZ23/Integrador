@@ -33,9 +33,19 @@ body {
 }
 
 .btn-login:hover {
-    background-color: #0056b3;
+    background-color: #e7ebf0;
+    box-shadow: #343a40;
 }
 
+.btn-login2 {
+    background-color: #ff0000;
+    color: #ffffff;
+}
+
+.btn-login2:hover {
+    background-color: #e7ebf0;
+    box-shadow: #343a40;
+}
 
 .lato-thin {
     font-family: "Lato", sans-serif;

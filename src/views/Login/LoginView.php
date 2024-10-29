@@ -36,11 +36,11 @@
                     <label class="form-check-label" for="rememberMe">Recordarme</label>
                 </div>
                 <button type="submit" class="btn btn-login w-100">Ingresar</button>
+                <div class="text-center mt-2">
+                    <button type="submit" class="btn btn-login2 w-100">Ingresar con google</button>
+                </div>
                 <div class="text-center mt-3">
                     <a href="#" class="text-decoration-none">Olvidé mi contraseña</a>
-                </div>
-                <div class="text-center mt-2">
-                    <span>¿Nuevo aquí? <a href="#" class="text-decoration-none">Regístrate</a></span>
                 </div>
             </form>
         </div>
