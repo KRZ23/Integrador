@@ -13,11 +13,11 @@ body {
     max-width: 400px;
 }
 
-.header-text {
-    font-size: 3rem;
-    font-weight: bold;
-    text-align: center;
-    color: #343a40;
+.header-img img.logo {
+    max-width: 150px; /* Ajusta el tamaño de la imagen */
+    height: auto;     /* Mantiene la proporción */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra alrededor de la imagen */
+    border-radius: 8px; /* Opcional: bordes redondeados */
 }
 
 .login-container {

@@ -16,20 +16,22 @@
 
 <body class="d-flex justify-content-center align-items-center vh-100">
     <div class="container-login">
-        <!-- Título de cabecera -->
-        <header class="header-text">Piedra de Agua</header>
-
         <!-- Formulario de inicio de sesión -->
         <div class="login-container">
+            <header class="header-img text-center mb-4">
+                <img src="../img/LogoPiedraDeAgua.webp" alt="" class="img-fluid logo">
+            </header>
             <h3 class="text-center mb-4">Iniciar sesión</h3>
-            <form action="../../Controller/AccsesUsers.php" class="login-form">
+            <form action="/src/Controller/AccsesUsers.php" class="login-form">
                 <div class="mb-3">
                     <label for="username" class="form-label">Nombre de usuario</label>
-                    <input type="text" class="form-control" id="username" name="username" placeholder="Ingresa tu nombre de usuario" required>
+                    <input type="text" class="form-control" id="username" name="username"
+                        placeholder="Ingresa tu nombre de usuario" required>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Contraseña</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Ingresa tu contraseña" required>
+                    <input type="password" class="form-control" id="password" name="password"
+                        placeholder="Ingresa tu contraseña" required>
                 </div>
                 <div class="form-check mb-3">
                     <input type="checkbox" class="form-check-input" id="rememberMe">
