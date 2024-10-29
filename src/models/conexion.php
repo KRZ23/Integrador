@@ -11,7 +11,7 @@ class conexion{
         $user ='root';
         $password=''; //por definir
         $server='localhost';
-        $database=''; //por definir 
+        $database='bd_piedradeagua'; //por definir 
         $this->con = new mysqli($server,$user,$password,$database);
     }
 }
