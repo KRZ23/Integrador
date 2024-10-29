@@ -14,6 +14,9 @@ class conexion{
         $database='bd_piedradeagua'; //por definir 
         $this->con = new mysqli($server,$user,$password,$database);
     }
+
+    public function getUser($usuario,$password){
+    }
 }
 
 //$host="localhost";
