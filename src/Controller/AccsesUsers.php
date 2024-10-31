@@ -15,13 +15,13 @@ $con = new conexion();
 $buscarUsuario = $con->getUser($usuario,$password);
 
 foreach($buscarUsuario as $user){
-    $id_cliente = $user['nombre_cliente'];
-    $dni=$user['dni'];
-    $correo = $user['correo_cliente'];
-    $telef =$user['tel_cliente'];
+    $id_cliente = $user['id_usufructuario'];
+    $nombre=$user['nombre_usufructuario'];
+    $apellido=$user['apellido_usufructuario	'];
+    $dni=$user['dni_usufructuario'];
     $rol = $user['id_rol'];
+    $correo = $user['correo_usufructuario'];
     $password = $user['contrasena'];
-    $edad =$user['edad'];
 }
 
 if (empty($searchUser)) {

@@ -19,7 +19,7 @@ class conexion
 
     public function getUser($usuario, $password)
     {
-        $query = $this->con->query("SELECT * FROM cliente WHERE correo_cliente='" . $usuario . "' AND contrasena='" . $password . "'"); //Sentancia para buscar los usuarios en la base de datos
+        $query = $this->con->query("SELECT * FROM usufructuario WHERE correo_usufructuario='" . $usuario . "' AND contrasena_usufructuario	='" . $password . "'"); //Sentancia para buscar los usuarios en la base de datos
 
 
         $retorno = [];
@@ -42,5 +42,5 @@ class conexion
 //$dbname="bd_piedradeagua";
 
 //$con = new mysqli($host, $user, $password, $dbname, $port, $socket)
-	//or die ('Could not connect to the database server' . mysqli_connect_error());
+//	or die ('Could not connect to the database server' . mysqli_connect_error());
 //$con->close();
