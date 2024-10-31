@@ -1,3 +1,3 @@
 <?php
-require('Controller/LoginController.php');
+require __DIR__ .'/src/Controller/LoginController.php';
 ?>
