@@ -19,17 +19,20 @@ class conexion
 
     public function getUser($usuario, $password)
     {
-        $query = $this->con->query("SELECT * FROM usufructuario WHERE correo_usufructuario='" . $usuario . "' AND contrasena_usufructuario	='" . $password . "'"); //Sentancia para buscar los usuarios en la base de datos
-
-
+        // Preparar la consulta para evitar inyecciones SQL
+        $stmt = $this->con->prepare("SELECT * FROM usufructuario WHERE correo_usufructuario = ? AND contrasena_usufructuario = ?");
+        $stmt->bind_param("ss", $usuario, $password); // "ss" indica que los parámetros son strings
+    
+        $stmt->execute(); // Ejecutar la consulta
+    
+        $result = $stmt->get_result(); // Obtener el resultado de la consulta
         $retorno = [];
-
-        $i = 0;
-        while ($fila = $query->fetch_assoc()) {
-
-            $retorno[$i] = $fila;
-            $i++;
+    
+        while ($fila = $result->fetch_assoc()) {
+            $retorno[] = $fila;
         }
+    
+        $stmt->close(); // Cerrar la declaración preparada
         return $retorno;
     }
 }
