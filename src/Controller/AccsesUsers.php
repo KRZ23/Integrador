@@ -1,5 +1,6 @@
 <?php
 require('../models/conexion.php');
+require('Constanst.php');
 
 //Evaluar si existe una conexción
 if(!isset($_SESSION)){
@@ -34,9 +35,10 @@ if (empty($searchUser)) {
 } else {
     switch ($rol) {
         case 'Cliente':
-            require('../views/VentasView.php'); // Aún no se crea la vista del cliente
+            require('../views/VentasView.php');
             break;
         case 'Jefe':
+            $urlViews = URL_VIEWS;
             require(''); // Aún no se crea la vista del jefe
             break;
         case 'Carguero':
