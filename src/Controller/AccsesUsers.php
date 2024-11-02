@@ -34,7 +34,7 @@ if (empty($searchUser)) {
 } else {
     switch ($rol) {
         case 'Cliente':
-            require(''); // Aún no se crea la vista del cliente
+            require('../views/VentasView.php'); // Aún no se crea la vista del cliente
             break;
         case 'Jefe':
             require(''); // Aún no se crea la vista del jefe

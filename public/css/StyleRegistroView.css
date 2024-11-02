@@ -1,0 +1,49 @@
+/* Fondo de la página con un degradado */
+body {
+    background: linear-gradient(135deg, #a8edea, #fed6e3);
+    padding: 0;
+    margin: 0;
+}
+
+/* Contenedor principal del formulario */
+.container-register {
+    max-width: 90vw; /* Ocupa el 90% del ancho de la ventana */
+    margin: auto;
+    padding: 20px;
+}
+
+/* Estilos del formulario */
+.register-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo centrado y más grande */
+.header-img img {
+    width: 200px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para el formulario en dos columnas */
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.form-group {
+    flex: 1 1 calc(50% - 10px); /* Cada campo ocupa la mitad del ancho */
+}
+
+.form-label {
+    font-size: 0.9em;
+}
+
+.btn-primary {
+    padding: 10px 0;
+    font-size: 1em;
+}
