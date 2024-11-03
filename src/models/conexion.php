@@ -20,7 +20,7 @@ class conexion
     public function getUser($usuario, $password)
     {
         // Preparar la consulta para evitar inyecciones SQL
-        $stmt = $this->con->prepare("SELECT * FROM usufructuario WHERE correo_usufructuario = ? AND contrasena_usufructuario = ?");
+        $stmt = $this->con->prepare("SELECT * FROM cliente WHERE correo_cliente = ? AND contrasena_cliente = ?");
         $stmt->bind_param("ss", $usuario, $password); // "ss" indica que los parámetros son strings
     
         $stmt->execute(); // Ejecutar la consulta

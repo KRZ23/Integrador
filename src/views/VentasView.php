@@ -1,3 +1,8 @@
+<?php
+session_start();
+    
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -9,7 +14,6 @@
 </head>
 
 <body>
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">PIEDRA DE AGUA</a>
