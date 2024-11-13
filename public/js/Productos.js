@@ -1,5 +1,5 @@
 
-const placeholderImagen = "/src/views/img/img.webp"; // Cambia esta ruta a la imagen que deseas usar como placeholder
+const placeholderImagen = "/src/views/img/FotosProducto/img.webp"; // Cambia esta ruta a la imagen que deseas usar como placeholder
 
 // Contenedor de productos
 const contenedorProductos = document.getElementById("productos-container");

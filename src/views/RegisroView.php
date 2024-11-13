@@ -13,7 +13,7 @@
     <div class="container-register">
         <div class="register-container card">
             <header class="header-img text-center mb-3">
-                <img src="./img/LogoPiedraDeAgua.webp" alt="Logo" class="img-fluid logo">
+                <img src="./img/Logo.webp" alt="Logo" class="img-fluid logo">
             </header>
             <h4 class="text-center mb-3">Registro</h4>
             <form action="/src/Controller/" method="POST"> <!-- CREAR UN CONTROLADOR PARA EL REGISTRO DE USUARIOS-->

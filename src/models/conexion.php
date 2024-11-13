@@ -5,8 +5,10 @@ class conexion
     private $user;
     private $password;
     private $server;
-    private $database;
+    private $dbname;
     private $con;
+    private $host;
+    private $port;
 
     public function __construct()
     {
@@ -14,10 +16,11 @@ class conexion
         $port = 3306;
         $socket = "";
         $user = "root";
-        $password = "";
+        $password = "pw23112004";
         $dbname = "bd_piedradeagua";
         $con = new mysqli($host, $user, $password, $dbname, $port, $socket)
             or die('Could not connect to the database server' . mysqli_connect_error());
+        return $con;
     }
 
     public function getUser($usuario, $password)
