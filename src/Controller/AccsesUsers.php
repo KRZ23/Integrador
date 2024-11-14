@@ -16,13 +16,13 @@ $con = new conexion();
 $buscarUsuario = $con->getUser($usuario,$password);
 
 foreach($buscarUsuario as $user){
-    $id_cliente = $user['id_usufructuario'];
-    $nombre=$user['nombre_usufructuario'];
-    $apellido=$user['apellido_usufructuario	'];
-    $dni=$user['dni_usufructuario'];
+    $id_cliente = $user['id_usuario'];
+    $nombre=$user['nombre_usuario'];
+    $apellido=$user['apellido_usuario	'];
+    $dni=$user['dni_usuario'];
     $rol = $user['id_rol'];
-    $correo = $user['correo_usufructuario'];
-    $password = $user['contrasena'];
+    $correo = $user['correo_usuario'];
+    $password = $user['contrasena_usuario'];
 }
 
 if (empty($searchUser)) {
@@ -30,7 +30,7 @@ if (empty($searchUser)) {
         <script language="javascript">
             alert("Usuario o Contraseña incorrectos, por favor intenta de nuevo");
             self.location = "/index.php";
-        </script>
+        </script>   
     ';
 } else {
     switch ($rol) {

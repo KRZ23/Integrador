@@ -19,7 +19,7 @@
         <!-- Formulario de inicio de sesión -->
         <div class="login-container">
             <header class="header-img text-center mb-4">
-                <img src="./img//Logo.webp" alt="Chuquinuni" class="img-fluid logo">
+                <img src="./img/FotosProducto/Logo.webp" alt="Chuquinuni" class="img-fluid logo">
             </header>
             <h3 class="text-center mb-4">Iniciar sesión</h3>
             <form action="/src/Controller/AccsesUsers.php" class="login-form">
