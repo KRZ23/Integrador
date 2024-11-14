@@ -34,7 +34,7 @@ if (empty($searchUser)) {
     ';
 } else {
     switch ($rol) {
-        case 'Cliente':
+        case '1':
             require('../views/VentasView.php');
             break;
         case 'Jefe':
