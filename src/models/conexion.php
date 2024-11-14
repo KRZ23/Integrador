@@ -16,7 +16,7 @@ class conexion
         $port = 3306;
         $socket = "";
         $user = "root";
-        $password = "pw23112004";
+        $password = "";
         $dbname = "bd_piedradeagua";
         $con = new mysqli($host, $user, $password, $dbname, $port, $socket)
             or die('Could not connect to the database server' . mysqli_connect_error());
@@ -26,7 +26,7 @@ class conexion
     public function getUser($usuario, $password)
     {
         // Preparar la consulta para evitar inyecciones SQL
-        $stmt = $this->con->prepare("SELECT * FROM cliente WHERE correo_cliente = ? AND contrasena_cliente = ?");
+        $stmt = $this->con->prepare("SELECT * FROM cliente WHERE correo_usuario = ? AND contrasena_usuario = ?");
         $stmt->bind_param("ss", $usuario, $password); // "ss" indica que los parámetros son strings
 
         $stmt->execute(); // Ejecutar la consulta
