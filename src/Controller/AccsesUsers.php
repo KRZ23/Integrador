@@ -1,53 +1,58 @@
 <?php
-require('../models/conexion.php');
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-//Evaluar si existe una conexción
-if(!isset($_SESSION)){
-    session_start();
-}
+require('../models/conexion.php'); // Archivo de conexión
 
-$usuario = $_GET['usuario'];
-$password = $_GET['password'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $usuario = $_POST['username'];
+    $password = $_POST['password'];
 
-$con = new conexion();
+    $con = new Conexion();
+    $buscarUsuario = $con->getUser($usuario); // Obtenemos los datos del usuario por su correo
 
-//Para buscar el usuario en la base de datos
-$buscarUsuario = $con->getUser($usuario,$password);
+    if ($buscarUsuario) {
+        // Verificar el hash de la contraseña
+        if (password_verify($password, $buscarUsuario['contrasena_usuario'])) {
+            // Si la contraseña coincide, iniciar sesión
+            session_start();
+            $_SESSION['id_usuario'] = $buscarUsuario['id_usuario'];
+            $_SESSION['nombre_usuario'] = $buscarUsuario['nombre_usuario'];
+            $_SESSION['rol'] = $buscarUsuario['id_rol'];
 
-foreach($buscarUsuario as $user){
-    $id_cliente = $user['nombre_cliente'];
-    $dni=$user['dni'];
-    $correo = $user['correo_cliente'];
-    $telef =$user['tel_cliente'];
-    $rol = $user['id_rol'];
-    $password = $user['contrasena'];
-    $edad =$user['edad'];
-}
-
-if (empty($searchUser)) {
-    echo '
-        <script language="javascript">
-            alert("Usuario o Contraseña incorrectos, por favor intenta de nuevo");
-            self.location = "/index.php";
-        </script>
-    ';
-} else {
-    switch ($rol) {
-        case 'Cliente':
-            require(''); // Aún no se crea la vista del cliente
-            break;
-        case 'Jefe':
-            require(''); // Aún no se crea la vista del jefe
-            break;
-        case 'Carguero':
-            require(''); // Aún no se crea la vista del carguero
-            break;
-        case 'Seguridad':
-            require(''); // Aún no se crea la vista del seguridad
-            break;
-        default:
-            // Manejo de rol no reconocido
-            echo '<script>alert("Rol no reconocido"); self.location = "/index.php";</script>';
-            break;
+            // Redirigir según el rol
+            switch ($buscarUsuario['id_rol']) {
+                case 1: // Rol cliente
+                    header("Location: ../views/VentasView.php");
+                    break;
+                case 2: // Rol administrador
+                    header("Location: ../Views/sellerDashboard.php");
+                    break;
+                case 3: // Rol guardia
+                    header("Location: ../Views/customerDashboard.php");
+                    break;
+                default:
+                    echo "Rol no reconocido.";
+                    break;
+            }
+        } else {
+            // Contraseña incorrecta
+            echo '
+                <script>
+                    alert("Usuario o contraseña incorrectos.");
+                    window.location.href = "../views/LoginView.php";
+                </script>
+            ';
+        }
+    } else {
+        // Usuario no encontrado
+        echo '
+            <script>
+                alert("Usuario o contraseña incorrectos.");
+                window.location.href = "../views/LoginView.php";
+            </script>
+        ';
     }
 }
+?>
