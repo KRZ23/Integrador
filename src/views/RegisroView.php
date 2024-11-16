@@ -16,7 +16,7 @@
                 <img src="./img/FotosProducto/Logo.webp" alt="Logo" class="img-fluid logo">
             </header>
             <h4 class="text-center mb-3">Registro</h4>
-            <form action="/src/Controller/" method="POST"> <!-- CREAR UN CONTROLADOR PARA EL REGISTRO DE USUARIOS-->
+            <form action="/src/Controller/RegistroContoller.php" method="POST"> <!-- CREAR UN CONTROLADOR PARA EL REGISTRO DE USUARIOS-->
                 <div class="form-row">
                     <div class="form-group mb-3">
                         <label for="nombre" class="form-label">Nombre</label>

@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 require('../models/conexion.php'); // Archivo de conexión
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $usuario = $_POST['username']; // Cambiado para coincidir con el formulario
+    $usuario = $_POST['username']; 
     $password = $_POST['password'];
 
     $con = new Conexion();
@@ -24,13 +24,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Redirigir según el rol
         switch ($user['id_rol']) {
-            case 1: // Rol Administrador
+            case 1: // Rol cliente
                 header("Location: ../views/VentasView.php");
                 break;
-            case 2: // Rol Vendedor
+            case 2: // Rol administrador
                 header("Location: ../Views/sellerDashboard.php");
                 break;
-            case 3: // Rol Cliente
+            case 3: // Rol guardia
                 header("Location: ../Views/customerDashboard.php");
                 break;
             default:
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo '
             <script>
                 alert("Usuario o contraseña incorrectos.");
-                window.location.href = "../index.php";
+                window.location.href = "../views/LoginView.php";
             </script>
         ';
     }
