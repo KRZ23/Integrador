@@ -6,39 +6,47 @@ error_reporting(E_ALL);
 require('../models/conexion.php'); // Archivo de conexión
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $usuario = $_POST['username']; 
+    $usuario = $_POST['username'];
     $password = $_POST['password'];
 
     $con = new Conexion();
+    $buscarUsuario = $con->getUser($usuario); // Obtenemos los datos del usuario por su correo
 
-    // Buscar usuario en la base de datos
-    $buscarUsuario = $con->getUser($usuario, $password);
+    if ($buscarUsuario) {
+        // Verificar el hash de la contraseña
+        if (password_verify($password, $buscarUsuario['contrasena_usuario'])) {
+            // Si la contraseña coincide, iniciar sesión
+            session_start();
+            $_SESSION['id_usuario'] = $buscarUsuario['id_usuario'];
+            $_SESSION['nombre_usuario'] = $buscarUsuario['nombre_usuario'];
+            $_SESSION['rol'] = $buscarUsuario['id_rol'];
 
-    if (!empty($buscarUsuario)) {
-        // Si el usuario existe, iniciar sesión
-        session_start();
-        $user = $buscarUsuario[0]; // Extraer el primer resultado
-        $_SESSION['id_usuario'] = $user['id_usuario'];
-        $_SESSION['nombre_usuario'] = $user['nombre_usuario'];
-        $_SESSION['rol'] = $user['id_rol'];
-
-        // Redirigir según el rol
-        switch ($user['id_rol']) {
-            case 1: // Rol cliente
-                header("Location: ../views/VentasView.php");
-                break;
-            case 2: // Rol administrador
-                header("Location: ../Views/sellerDashboard.php");
-                break;
-            case 3: // Rol guardia
-                header("Location: ../Views/customerDashboard.php");
-                break;
-            default:
-                echo "Rol no reconocido.";
-                break;
+            // Redirigir según el rol
+            switch ($buscarUsuario['id_rol']) {
+                case 1: // Rol cliente
+                    header("Location: ../views/VentasView.php");
+                    break;
+                case 2: // Rol administrador
+                    header("Location: ../Views/sellerDashboard.php");
+                    break;
+                case 3: // Rol guardia
+                    header("Location: ../Views/customerDashboard.php");
+                    break;
+                default:
+                    echo "Rol no reconocido.";
+                    break;
+            }
+        } else {
+            // Contraseña incorrecta
+            echo '
+                <script>
+                    alert("Usuario o contraseña incorrectos.");
+                    window.location.href = "../views/LoginView.php";
+                </script>
+            ';
         }
     } else {
-        // Si no se encontró el usuario, mostrar error
+        // Usuario no encontrado
         echo '
             <script>
                 alert("Usuario o contraseña incorrectos.");

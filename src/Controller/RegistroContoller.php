@@ -1,11 +1,11 @@
 <?php
-require_once "../models/conexion.php";  // Asegúrate de que la ruta sea correcta
+require_once "../models/conexion.php";
 
 class RegisterController {
     private $model;
 
     public function __construct() {
-        $this->model = new Conexion(); // Crear la instancia del modelo
+        $this->model = new Conexion();
     }
 
     public function register($nombre, $apellido, $dni, $correo, $password) {
@@ -19,7 +19,7 @@ class RegisterController {
             return "Correo no válido";
         }
 
-        // Verificación de DNI (esto puede variar dependiendo del formato de tu DNI)
+        // Verificación de DNI
         if (!preg_match("/^[0-9]{8}$/", $dni)) {
             return "DNI inválido";
         }
@@ -30,34 +30,31 @@ class RegisterController {
         // Asignar el rol de ventas (id_rol = 1) por defecto
         $id_rol = 1;
 
-        // Llamar al modelo para registrar el usuario, pasando el rol como parámetro
+        // Registrar el usuario
         $response = $this->model->registerUser($nombre, $apellido, $dni, $correo, $hashedPassword, $id_rol);
 
         // Verificar la respuesta y redirigir si es exitosa
         if ($response === "Usuario registrado con éxito") {
             header('Location: ../views/LoginView.php'); // Redirigir al login si el registro es exitoso
-            exit();  // Terminar la ejecución del script
+            exit();
         } else {
-            return $response;  // Devolver el mensaje de error si algo salió mal
+            return $response;
         }
     }
 }
 
 // Comprobar si el formulario fue enviado
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Recibir los datos del formulario
     $nombre = $_POST['nombre'];
     $apellido = $_POST['apellido'];
     $dni = $_POST['dni'];
     $correo = $_POST['correo'];
     $password = $_POST['password'];
 
-    // Instanciar el controlador
     $controller = new RegisterController();
     $response = $controller->register($nombre, $apellido, $dni, $correo, $password);
 
-    // Mostrar el mensaje de respuesta
-    echo $response;  // O puedes redirigir a otra página
+    echo $response;
 }
 ?>
 
