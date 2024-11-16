@@ -1,6 +1,12 @@
 <?php
-include './HeadView.php'
+include './HeadView.php';
+session_start();
+if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
+    header("Location: ../index.php");
+    exit();
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 

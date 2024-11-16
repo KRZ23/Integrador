@@ -1,44 +1,37 @@
 <?php
+class Conexion {
+    private $conn;
 
-class conexion
-{
-    private $user;
-    private $password;
-    private $server;
-    private $dbname;
-    private $con;
-    private $host;
-    private $port;
-
-    public function __construct()
-    {
+    public function __construct() {
         $host = "localhost";
-        $port = 3306;
-        $socket = "";
-        $user = "root";
-        $password = "";
+        $port = 5432;
         $dbname = "bd_piedradeagua";
-        $con = new mysqli($host, $user, $password, $dbname, $port, $socket)
-            or die('Could not connect to the database server' . mysqli_connect_error());
-        return $con;
-    }
+        $username = "postgres";
+        $password = "pw23112004";
 
-    public function getUser($usuario, $password)
-    {
-        // Preparar la consulta para evitar inyecciones SQL
-        $stmt = $this->con->prepare("SELECT * FROM cliente WHERE correo_usuario = ? AND contrasena_usuario = ?");
-        $stmt->bind_param("ss", $usuario, $password); // "ss" indica que los parámetros son strings
-
-        $stmt->execute(); // Ejecutar la consulta
-
-        $result = $stmt->get_result(); // Obtener el resultado de la consulta
-        $retorno = [];
-
-        while ($fila = $result->fetch_assoc()) {
-            $retorno[] = $fila;
+        try {
+            $this->conn = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $username, $password);
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $exp) {
+            echo "No se pudo conectar a la base de datos: " . $exp->getMessage();
         }
-
-        $stmt->close(); // Cerrar la declaración preparada
-        return $retorno;
     }
+
+    public function getUser($usuario, $password) {
+        $stmt = $this->conn->prepare("
+            SELECT * 
+            FROM bd_piedradeagua.usuario 
+            WHERE correo_usuario = :usuario 
+            AND contrasena_usuario = :password
+        ");
+    
+        $stmt->bindParam(":usuario", $usuario, PDO::PARAM_STR);
+        $stmt->bindParam(":password", $password, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+
+    
 }
+?>
