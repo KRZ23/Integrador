@@ -9,6 +9,7 @@
     <title>Piedra de Agua</title>
     <link rel="stylesheet" href="../../public/css/Bootstrap_css/bootstrap.min.css">
     <link rel="stylesheet" href="../../public/css/StyleLoginView.css">
+    <link rel="shortcut icon" href="img/FotosProducto//Logo.webp">
 </head>
 <body class="d-flex justify-content-center align-items-center vh-100">
     <div class="container-login">
