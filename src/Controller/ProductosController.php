@@ -1,19 +1,18 @@
 <?php
-include 'conexion.php';
+require_once '../models/conexion.php';
 
-try {
-    $query = "SELECT nombre_material, descripcion, precio, ruta_imagen FROM material";
-    $stmt = $conn->prepare($query);
-    $stmt->execute();
-    
-    // Fetch all products as an associative array
-    $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+class ProductosController {
+    public function obtenerProductos() {
+        $conexion = new Conexion();
+        $productos = $conexion->getProductos();
 
-    // Opcional: convierte los datos a JSON para usarlos directamente en JavaScript
-    header('Content-Type: application/json');
-    echo json_encode($productos);
-    
-} catch (PDOException $e) {
-    echo "Error al obtener los productos: " . $e->getMessage();
+        // Devolver los productos en formato JSON
+        header('Content-Type: application/json');
+        echo json_encode($productos);
+    }
 }
+
+// Instanciar el controlador y llamar al método
+$controller = new ProductosController();
+$controller->obtenerProductos();
 ?>

@@ -52,5 +52,24 @@ class Conexion {
             return "Error: " . $e->getMessage();
         }
     }
+
+    public function getProductos() {
+        try {
+            $stmt = $this->conn->prepare("
+                SELECT
+                    id_producto, 
+                    nombre_producto, 
+                    descripcion_producto, 
+                    precio_producto, 
+                    imagen, 
+                    id_categoria 
+                FROM bd_piedradeagua.productos
+            ");
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return [];
+        }
+    }
 }
 ?>
