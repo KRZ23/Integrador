@@ -15,7 +15,7 @@
     <link href="../../public/js/Bootstrap_js/bootstrap.min.js" rel="stylesheet">
 
     <!-- Estilos personalizados -->
-    <link href="<?php echo $urlViews; ?>css/style.css" rel="stylesheet">
+    <link href="<?php echo $urlViews; ?>" rel="stylesheet">
 </head>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">

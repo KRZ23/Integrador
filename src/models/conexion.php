@@ -55,6 +55,7 @@ class Conexion {
 
     public function getProductos() {
         try {
+            // Preparar la consulta SQL
             $stmt = $this->conn->prepare("
                 SELECT
                     id_producto, 
@@ -65,9 +66,15 @@ class Conexion {
                     id_categoria 
                 FROM bd_piedradeagua.productos
             ");
+    
+            // Ejecutar la consulta
             $stmt->execute();
+    
+            // Retornar los productos como un array asociativo
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
+            // Registrar el error o devolver un array vacío
+            error_log("Error en getProductos: " . $e->getMessage());
             return [];
         }
     }
