@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     header("Location: ../views/VentasView.php");
                     break;
                 case 2: // Rol administrador
-                    header("Location: ../Views/sellerDashboard.php");
+                    header("Location: ../Views/DashBoardView.php");
                     break;
                 case 3: // Rol guardia
                     header("Location: ../Views/customerDashboard.php");

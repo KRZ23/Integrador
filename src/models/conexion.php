@@ -1,8 +1,10 @@
 <?php
-class Conexion {
+class Conexion
+{
     private $conn;
 
-    public function __construct() {
+    public function __construct()
+    {
         $host = "localhost";
         $port = 5432;
         $dbname = "bd_piedradeagua";
@@ -18,7 +20,8 @@ class Conexion {
     }
 
     // Obtener usuario por correo
-    public function getUser($usuario) {
+    public function getUser($usuario)
+    {
         $stmt = $this->conn->prepare("
             SELECT * 
             FROM bd_piedradeagua.usuario 
@@ -30,7 +33,8 @@ class Conexion {
     }
 
     // Registrar usuario
-    public function registerUser($nombre, $apellido, $dni, $correo, $password, $id_rol) {
+    public function registerUser($nombre, $apellido, $dni, $correo, $password, $id_rol)
+    {
         try {
             $stmt = $this->conn->prepare("
                 INSERT INTO bd_piedradeagua.usuario (nombre_usuario, apellido_usuario, dni_usuario, correo_usuario, contrasena_usuario, id_rol) 
@@ -53,7 +57,8 @@ class Conexion {
         }
     }
 
-    public function getProductos() {
+    public function getProductos()
+    {
         try {
             // Preparar la consulta SQL
             $stmt = $this->conn->prepare("
@@ -66,10 +71,10 @@ class Conexion {
                     id_categoria 
                 FROM bd_piedradeagua.productos
             ");
-    
+
             // Ejecutar la consulta
             $stmt->execute();
-    
+
             // Retornar los productos como un array asociativo
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
@@ -78,5 +83,66 @@ class Conexion {
             return [];
         }
     }
+
+    public function obtenerPedidos()
+{
+    try {
+        $sql = "
+            SELECT 
+                pedido.id_pedido,
+                pedido.fecha_pedido,
+                pedido.estado_material,
+                pedido.desc_pedido,
+                usuario.nombre_usuario,
+                usuario.apellido_usuario,
+                usuario.correo_usuario,
+                material.id_material,
+                material.nombre_material,
+                material_pedido.cantidad_pedido
+            FROM 
+                bd_piedradeagua.pedido
+            LEFT JOIN 
+                bd_piedradeagua.material_pedido ON pedido.id_pedido = material_pedido.id_pedido
+            LEFT JOIN 
+                bd_piedradeagua.material ON material_pedido.id_material = material.id_material
+            LEFT JOIN 
+                bd_piedradeagua.usuario ON pedido.id_usuario = usuario.id_usuario
+        ";
+
+        // Usamos $this->conn para la conexión
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+
+        // Devolvemos los resultados como un array asociativo
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        // Captura de errores
+        error_log("Error al obtener pedidos: " . $e->getMessage());
+        throw new Exception("Error al obtener pedidos");
+    }
 }
-?>
+
+public function actualizarEstadoPedido($idPedido, $nuevoEstado)
+{
+    try {
+        $query = "
+            UPDATE bd_piedradeagua.pedido
+            SET estado_material = :estado
+            WHERE id_pedido = :id_pedido
+        ";
+
+        // Usamos $this->conn para la conexión
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':estado', $nuevoEstado, PDO::PARAM_STR);
+        $stmt->bindParam(':id_pedido', $idPedido, PDO::PARAM_INT);
+
+        // Ejecutamos la consulta y retornamos si se afectaron filas
+        $stmt->execute();
+        return $stmt->rowCount() > 0;
+    } catch (PDOException $e) {
+        // Captura de errores
+        error_log("Error al actualizar el estado del pedido: " . $e->getMessage());
+        throw new Exception("Error al actualizar el estado del pedido");
+    }
+}
+}
