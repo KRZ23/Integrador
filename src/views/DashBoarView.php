@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    
+
     <div class="dashboard">
         <!-- Barra lateral -->
         <aside class="sidebar">
@@ -40,10 +40,13 @@
                         <tr>
                             <th>ID</th>
                             <th>Nombre</th>
-                            <th>Email</th>
+                            <th>DNI</th>
                             <th>Rol</th>
-                            <th>Acciones</th>
+                            <th>Correo</th>
                         </tr>
+                    <tbody id="usuarios-tbody">
+                        <!-- Aquí se cargarán los productos dinámicamente -->
+                    </tbody>
                     </thead>
                     <tbody>
                         <!-- Aquí se cargarán los usuarios dinámicamente -->
@@ -57,15 +60,16 @@
                 <table class="table">
                     <thead>
                         <tr>
+                            <th>Imagen</th>
                             <th>ID</th>
                             <th>Nombre</th>
+                            <th>Descripción</th>
                             <th>Precio</th>
                             <th>Categoría</th>
-                            <th>Acciones</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <!-- Aquí se cargarán los productos dinámicamente -->
+                    <tbody id="productos-table-body">
+                        <!-- Las filas de productos se insertarán aquí dinámicamente -->
                     </tbody>
                 </table>
             </section>
@@ -79,7 +83,7 @@
             </section>
 
             <section id="pedidos" class="section">
-            <button id="btnAbrirFormulario" class="btn btn-primary">Agregar Pedido</button>
+                <button id="btnAbrirFormulario" class="btn btn-primary">Agregar Pedido</button>
                 <table class="table">
                     <thead>
                         <tr>
@@ -89,6 +93,7 @@
                             <th>Descripción</th>
                             <th>Nombre del cliente</th>
                             <th>Correo del cliente</th>
+                            <th>Cantidad Pedida</th>
                         </tr>
                     </thead>
                     <tbody id="pedidos-tbody">
@@ -102,6 +107,8 @@
 
     <script src="../../public/js/DasBoard.js"></script>
     <script src="../../public/js/Pedidos.js"></script>
+    <script src="../../public/js/Usuarios.js"></script>
+    <script src="../../public/js/ProductosAdm.js"></script>
 </body>
 
 </html>

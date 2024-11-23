@@ -15,6 +15,9 @@ class PedidoController {
     public function obtenerPedidos() {
         try {
             $pedidos = $this->modelo->obtenerPedidos();
+            if (empty($pedidos)) {
+                throw new Exception("No se encontraron pedidos.");
+            }
             echo json_encode([
                 'success' => true,
                 'data' => $pedidos

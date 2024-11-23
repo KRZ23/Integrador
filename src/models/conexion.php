@@ -204,4 +204,25 @@ class Conexion
             return false; // Operación fallida
         }
     }
+
+    public function mostrarUsuarios() {
+        try {
+            // Consulta SQL parametrizada
+            $sql = "SELECT id_usuario, nombre_usuario, dni_usuario, id_rol, correo_usuario 
+                    FROM bd_piedradeagua.usuario 
+                    ORDER BY id_usuario ASC";
+    
+            // Preparar la consulta
+            $stmt = $this->conn->prepare($sql);
+    
+            // Ejecutar la consulta
+            $stmt->execute();
+    
+            // Retornar los resultados como un arreglo asociativo
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            // Manejo de errores
+            throw new Exception("Error al mostrar usuarios: " . $e->getMessage());
+        }
+    }
 }

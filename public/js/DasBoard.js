@@ -19,11 +19,7 @@ document.querySelectorAll('.sidebar a').forEach(link => {
     });
 });
 
-// Función para cargar los pedidos
-function cargarPedidos() {
-    console.log("Generando la tabla de pedidos...");
-    // Aquí iría la lógica para generar dinámicamente los pedidos si es necesario.
-}
+
 
 // Botón de logout
 document.getElementById('logout-btn').addEventListener('click', () => {
