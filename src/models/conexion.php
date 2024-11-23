@@ -146,16 +146,62 @@ class Conexion
         }
     }
 
-    public function AgregarPedido($id_usuario, $fecha, $nuevoEstado, $descripcion)
+    public function AgregarPedidoConMaterial($id_usuario, $estado_material, $descripcion, $id_material, $cantidad_pedido)
     {
-        $stmt = $this->conn->prepare(
-        
-        "INSERT INTO bd_piedradeagua.pedido (
-        id_usuario =  :id_usuario, 
-        fecha_pedido = :fecha, 
-        estado_material = :nuevoEstado, 
-        desc_pedido = :descripcion) 
-        VALUES (id_usuario= :id_usuario, NOW(), "
-        );
+        try {
+            // Inicia una transacción
+            $this->conn->beginTransaction();
+    
+            // Consulta con cláusula WITH
+            $sql = "
+                WITH nuevo_pedido AS (
+                    INSERT INTO bd_piedradeagua.pedido (
+                        id_usuario, 
+                        fecha_pedido, 
+                        estado_material, 
+                        desc_pedido
+                    ) VALUES (
+                        :id_usuario, 
+                        NOW(), 
+                        :estado_material, 
+                        :descripcion
+                    )
+                    RETURNING id_pedido
+                )
+                INSERT INTO bd_piedradeagua.material_pedido (
+                    id_material, 
+                    id_pedido, 
+                    cantidad_pedido
+                )
+                VALUES (
+                    :id_material, 
+                    (SELECT id_pedido FROM nuevo_pedido), 
+                    :cantidad_pedido
+                );
+            ";
+    
+            // Prepara la consulta
+            $stmt = $this->conn->prepare($sql);
+    
+            // Enlaza los parámetros
+            $stmt->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
+            $stmt->bindParam(':estado_material', $estado_material, PDO::PARAM_STR);
+            $stmt->bindParam(':descripcion', $descripcion, PDO::PARAM_STR);
+            $stmt->bindParam(':id_material', $id_material, PDO::PARAM_INT);
+            $stmt->bindParam(':cantidad_pedido', $cantidad_pedido, PDO::PARAM_INT);
+    
+            // Ejecuta la consulta
+            $stmt->execute();
+    
+            // Confirma la transacción
+            $this->conn->commit();
+    
+            return true; // Operación exitosa
+        } catch (PDOException $e) {
+            // En caso de error, deshace la transacción
+            $this->conn->rollBack();
+            echo "Error: " . $e->getMessage();
+            return false; // Operación fallida
+        }
     }
 }

@@ -9,7 +9,7 @@ class PedidoController {
     private $modelo;
 
     public function __construct() {
-        $this->modelo = new Conexion(); // Asegúrate de que este modelo esté implementado correctamente
+        $this->modelo = new Conexion(); 
     }
 
     public function obtenerPedidos() {
@@ -48,6 +48,28 @@ class PedidoController {
             ]);
         }
     }
+    public function agregarPedido($data)
+    {
+        // Validar los datos recibidos
+        if (!isset($data['id_usuario'], $data['estado_material'], $data['descripcion'], $data['id_material'], $data['cantidad_pedido'])) {
+            return ["error" => "Datos insuficientes para crear un pedido."];
+        }
+
+        // Llama al modelo para agregar el pedido
+        $resultado = $this->modelo->AgregarPedidoConMaterial(
+            $data['id_usuario'],
+            $data['estado_material'],
+            $data['descripcion'],
+            $data['id_material'],
+            $data['cantidad_pedido']
+        );
+
+        if ($resultado) {
+            return ["success" => "Pedido creado correctamente."];
+        } else {
+            return ["error" => "Error al crear el pedido."];
+        }
+    }
 }
 
 $controller = new PedidoController();
@@ -68,3 +90,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'fetch') {
         ]);
     }
 }
+

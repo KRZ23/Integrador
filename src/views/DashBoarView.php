@@ -79,6 +79,7 @@
             </section>
 
             <section id="pedidos" class="section">
+            <button id="btnAbrirFormulario" class="btn btn-primary">Agregar Pedido</button>
                 <table class="table">
                     <thead>
                         <tr>

@@ -53,7 +53,7 @@ class ElementFactory {
             </td>
             <td>${pedido.desc_pedido}</td>
             <td>${pedido.nombre_usuario} ${pedido.apellido_usuario}</td>
-            <td>${pedido.correo_usuario}</td>
+            <td>${pedido.correo_usuario}</td
         `;
         return tr;
     }
