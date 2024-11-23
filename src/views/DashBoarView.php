@@ -78,7 +78,7 @@
                 </div>
             </section>
 
-            <section id="pedidos" class="section active">
+            <section id="pedidos" class="section">
                 <table class="table">
                     <thead>
                         <tr>

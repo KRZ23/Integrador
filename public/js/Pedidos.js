@@ -1,4 +1,4 @@
-// Pattern: Singleton para gestionar la instancia del API
+// Singleton para gestionar la instancia del API
 class PedidoAPI {
     static instance;
 
@@ -10,10 +10,10 @@ class PedidoAPI {
 
     async fetchPedidos() {
         try {
-            const response = await fetch(`${this.baseURL}/PedidosController.php`);
+            const response = await fetch(`${this.baseURL}?action=fetch`);
             if (!response.ok) throw new Error('Error al obtener los pedidos');
             const data = await response.json();
-            return data.data;
+            return data.data || [];
         } catch (error) {
             console.error(error);
             return [];
@@ -22,10 +22,10 @@ class PedidoAPI {
 
     async actualizarEstado(idPedido, nuevoEstado) {
         try {
-            const response = await fetch(`${this.baseURL}/PedidosController.php`, {
+            const response = await fetch(this.baseURL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ idPedido, nuevoEstado })
+                body: JSON.stringify({ idPedido, nuevoEstado }),
             });
             const result = await response.json();
             return result.success;
@@ -36,7 +36,7 @@ class PedidoAPI {
     }
 }
 
-// Pattern: Factory para crear elementos HTML dinámicamente
+// Factory para crear elementos HTML dinámicos
 class ElementFactory {
     static createTableRow(pedido) {
         const tr = document.createElement('tr');
@@ -59,7 +59,7 @@ class ElementFactory {
     }
 }
 
-// Pattern: Observer para manejar actualizaciones dinámicas en la vista
+// Observer para manejar actualizaciones dinámicas en la vista
 class PedidoObserver {
     constructor() {
         this.observers = [];
@@ -70,7 +70,7 @@ class PedidoObserver {
     }
 
     notify(data) {
-        this.observers.forEach(callback => callback(data));
+        this.observers.forEach((callback) => callback(data));
     }
 }
 
@@ -81,9 +81,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const tbody = document.getElementById('pedidos-tbody');
 
     // Actualizar la tabla de pedidos
-    pedidoObserver.subscribe(pedidos => {
+    pedidoObserver.subscribe((pedidos) => {
         tbody.innerHTML = ''; // Limpiar tabla
-        pedidos.forEach(pedido => {
+        pedidos.forEach((pedido) => {
             const row = ElementFactory.createTableRow(pedido);
             tbody.appendChild(row);
         });
@@ -101,6 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             alert(`Estado del pedido ${idPedido} actualizado a ${nuevoEstado}`);
+            cargarPedidos(); // Recargar pedidos
         }
     });
 
