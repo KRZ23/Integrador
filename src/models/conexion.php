@@ -85,9 +85,9 @@ class Conexion
     }
 
     public function obtenerPedidos()
-{
-    try {
-        $sql = "
+    {
+        try {
+            $sql = "
             SELECT 
                 pedido.id_pedido,
                 pedido.fecha_pedido,
@@ -109,40 +109,53 @@ class Conexion
                 bd_piedradeagua.usuario ON pedido.id_usuario = usuario.id_usuario
         ";
 
-        // Usamos $this->conn para la conexión
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute();
+            // Usamos $this->conn para la conexión
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
 
-        // Devolvemos los resultados como un array asociativo
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-        // Captura de errores
-        error_log("Error al obtener pedidos: " . $e->getMessage());
-        throw new Exception("Error al obtener pedidos");
+            // Devolvemos los resultados como un array asociativo
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            // Captura de errores
+            error_log("Error al obtener pedidos: " . $e->getMessage());
+            throw new Exception("Error al obtener pedidos");
+        }
     }
-}
 
-public function actualizarEstadoPedido($idPedido, $nuevoEstado)
-{
-    try {
-        $query = "
+    public function actualizarEstadoPedido($idPedido, $nuevoEstado)
+    {
+        try {
+            $sql = "
             UPDATE bd_piedradeagua.pedido
             SET estado_material = :estado
             WHERE id_pedido = :id_pedido
         ";
 
-        // Usamos $this->conn para la conexión
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':estado', $nuevoEstado, PDO::PARAM_STR);
-        $stmt->bindParam(':id_pedido', $idPedido, PDO::PARAM_INT);
+            // Usamos $this->conn para la conexión
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':estado', $nuevoEstado, PDO::PARAM_STR);
+            $stmt->bindParam(':id_pedido', $idPedido, PDO::PARAM_INT);
 
-        // Ejecutamos la consulta y retornamos si se afectaron filas
-        $stmt->execute();
-        return $stmt->rowCount() > 0;
-    } catch (PDOException $e) {
-        // Captura de errores
-        error_log("Error al actualizar el estado del pedido: " . $e->getMessage());
-        throw new Exception("Error al actualizar el estado del pedido");
+            // Ejecutamos la consulta y retornamos si se afectaron filas
+            $stmt->execute();
+            return $stmt->rowCount() > 0;
+        } catch (PDOException $e) {
+            // Captura de errores
+            error_log("Error al actualizar el estado del pedido: " . $e->getMessage());
+            throw new Exception("Error al actualizar el estado del pedido");
+        }
     }
-}
+
+    public function AgregarPedido($id_usuario, $fecha, $nuevoEstado, $descripcion)
+    {
+        $stmt = $this->conn->prepare(
+        
+        "INSERT INTO bd_piedradeagua.pedido (
+        id_usuario =  :id_usuario, 
+        fecha_pedido = :fecha, 
+        estado_material = :nuevoEstado, 
+        desc_pedido = :descripcion) 
+        VALUES (id_usuario= :id_usuario, NOW(), "
+        );
+    }
 }

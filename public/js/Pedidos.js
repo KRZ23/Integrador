@@ -23,7 +23,7 @@ class PedidoAPI {
     async actualizarEstado(idPedido, nuevoEstado) {
         try {
             const response = await fetch(`${this.baseURL}/PedidosController.php`, {
-                method: 'PUT',
+                method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ idPedido, nuevoEstado })
             });
