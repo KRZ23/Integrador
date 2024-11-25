@@ -27,10 +27,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     header("Location: ../views/VentasView.php");
                     break;
                 case 2: // Rol administrador
-                    header("Location: ../Views/DashBoardView.php");
+                    header("Location: ../views/DashBoarView.php");
                     break;
                 case 3: // Rol guardia
-                    header("Location: ../Views/customerDashboard.php");
+                    header("Location: ../views/customerDashboard.php");
                     break;
                 default:
                     echo "Rol no reconocido.";
