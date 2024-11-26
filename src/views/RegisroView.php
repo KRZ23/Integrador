@@ -38,8 +38,9 @@
                         <label for="password" class="form-label">Contraseña</label>
                         <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" required>
                     </div>
-                </div>
                 <button type="submit" class="btn btn-primary w-100">Registrarse</button>
+                <a class='cuenta'href="./LoginView.php">Ya tienes una cuenta?</a>
+                </div>
             </form>
         </div>
     </div>

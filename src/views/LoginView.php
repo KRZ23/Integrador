@@ -9,7 +9,9 @@
     <title>Piedra de Agua</title>
     <link rel="stylesheet" href="../../public/css/Bootstrap_css/bootstrap.min.css">
     <link rel="stylesheet" href="../../public/css/StyleLoginView.css">
+    <link rel="shortcut icon" href="img/FotosProducto//Logo.webp">
 </head>
+
 <body class="d-flex justify-content-center align-items-center vh-100">
     <div class="container-login">
         <!-- Formulario de inicio de sesión -->
@@ -36,6 +38,10 @@
                 <button type="submit" class="btn btn-login w-100">Ingresar</button>
                 <div class="text-center mt-3">
                     <a href="#" class="text-decoration-none">Olvidé mi contraseña</a>
+                </div>
+                <div class="mt-3 text-center">
+                    <p>No te encuentras registrado?</p>
+                    <a href="./RegisroView.php">Crear cuenta</a>
                 </div>
             </form>
         </div>

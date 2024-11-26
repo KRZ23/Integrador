@@ -50,11 +50,25 @@ class ImagenProxy {
     }
 
     load() {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
+            // Cargar primero el placeholder
             this.imageElement.src = this.placeholderSrc;
-            this.imageElement.onload = () => {
+
+            // Intentar cargar la imagen principal
+            const tempImage = new Image();
+            tempImage.src = this.src;
+
+            tempImage.onload = () => {
+                // Cuando la imagen principal carga exitosamente
                 this.imageElement.src = this.src;
                 resolve(this.imageElement);
+            };
+
+            tempImage.onerror = () => {
+                console.error("Error al cargar la imagen:", this.src);
+                // Usar placeholder en caso de error
+                this.imageElement.src = this.placeholderSrc;
+                reject(new Error("No se pudo cargar la imagen principal."));
             };
         });
     }
@@ -69,31 +83,37 @@ if (!contenedorProductos) {
 
 // Función para mostrar productos
 function mostrarProductos(productos) {
-    contenedorProductos.innerHTML = ""; // Limpiar contenedor
+    contenedorProductos.innerHTML = ""; // Limpiar el contenedor
 
     if (productos.length === 0) {
-        // Mostrar un placeholder si no hay productos
-        productos = [{
-            nombre: "Producto no disponible",
-            descripcion: "Actualmente no hay productos disponibles.",
-            precio: "",
-            imagen: placeholderImagen
-        }];
+        // Si no hay productos, mostrar un placeholder
+        productos = [ProductoFactory.crearProducto(null)];
+    } else {
+        // Crear productos reales con la Factory
+        productos = productos.map(data => ProductoFactory.crearProducto({
+            nombre: data.nombre_producto,
+            descripcion: data.descripcion_producto,
+            precio: data.precio_producto,
+            imagen: data.imagen
+        }));
     }
 
-    productos.forEach(data => {
+    productos.forEach(producto => {
         const col = document.createElement("div");
         col.classList.add("col");
 
         const card = document.createElement("div");
         card.classList.add("card", "h-100");
 
-        // Imagen
-        const img = document.createElement("img");
-        img.src = data.imagen || placeholderImagen;
-        img.alt = data.nombre;
-        img.classList.add("card-img-top");
-        card.appendChild(img);
+        // Imagen (con Proxy)
+        const proxy = new ImagenProxy(producto.imagen, placeholderImagen);
+        proxy.load().then(imgElement => {
+            imgElement.classList.add("card-img-top");
+            imgElement.alt = producto.nombre;
+
+            // Añadir imagen al principio de la tarjeta
+            card.insertBefore(imgElement, card.firstChild);
+        });
 
         // Cuerpo de la tarjeta
         const cardBody = document.createElement("div");
@@ -102,35 +122,35 @@ function mostrarProductos(productos) {
         // Título
         const cardTitle = document.createElement("h5");
         cardTitle.classList.add("card-title");
-        cardTitle.textContent = data.nombre;
+        cardTitle.textContent = producto.nombre;
 
         // Descripción
         const cardText = document.createElement("p");
         cardText.classList.add("card-text");
-        cardText.textContent = data.descripcion;
+        cardText.textContent = producto.descripcion;
 
-        // Precio (solo si existe)
-        if (data.precio) {
+        // Precio
+        if (producto.precio) {
             const cardPrice = document.createElement("p");
             cardPrice.classList.add("text-success");
-            cardPrice.textContent = `${data.precio} Soles`;
+            cardPrice.textContent = `${producto.precio} Soles`;
             cardBody.appendChild(cardPrice);
         }
 
-        // Añadir título y descripción al cuerpo de la tarjeta
+        // Añadir elementos al cuerpo de la tarjeta
         cardBody.appendChild(cardTitle);
         cardBody.appendChild(cardText);
 
         // Añadir el cuerpo de la tarjeta a la tarjeta principal
         card.appendChild(cardBody);
 
-        // Mostrar botón "Comprar" solo si hay productos disponibles (no es un placeholder)
-        if (data.nombre !== "Producto no disponible") {
+        // Botón "Comprar"
+        if (producto.nombre !== "Producto no disponible") {
             const btnComprar = document.createElement("a");
             btnComprar.classList.add("btn", "btn-primary", "w-100");
             btnComprar.href = "#";
             btnComprar.textContent = "Comprar";
-            card.appendChild(btnComprar); // Añadir botón al final
+            card.appendChild(btnComprar);
         }
 
         // Agregar la tarjeta a la columna
@@ -141,14 +161,17 @@ function mostrarProductos(productos) {
     });
 }
 
-// Llamada a la API para cargar los productos desde el backend
+// Llamada a la API
 fetch('/src/Controller/ProductosController.php')
     .then(response => response.json())
     .then(data => {
         console.log("Datos de productos:", data); // Verificar datos
-        mostrarProductos(data);
+        productosObserver.notify(data); // Notificar cambios
+        mostrarProductos(data); // Mostrar productos
     })
     .catch(error => {
         console.error('Error al cargar productos:', error);
-        mostrarProductos([]); // Mostrar placeholder en caso de error
+        productosObserver.notify([]); // Notificar con un placeholder
+        mostrarProductos([]); // Mostrar placeholder
     });
+
