@@ -83,7 +83,7 @@
             </section>
 
             <section id="pedidos" class="section">
-                <button id="btnAbrirFormulario" class="btn btn-primary">Agregar Pedido</button>
+                <button id="abrirModal" class="btn btn-primary">Agregar Pedido</button>
                 <table class="table">
                     <thead>
                         <tr>
@@ -101,7 +101,51 @@
                     </tbody>
                 </table>
             </section>
+            
+            <dialog id="modalFormulario" class="rounded-3 shadow-lg">
+                <form id="formPedido" class="p-4" method="post">
+                    <h3 class="text-center mb-4">Registrar Nuevo Pedido</h3>
+                    <div class="mb-3">
+                        <label for="material" class="form-label">Material:</label>
+                        <input type="text" id="material" name="material" class="form-control" required>
+                    </div>
 
+                    <div class="mb-3">
+                        <label for="estado" class="form-label">Estado:</label>
+                        <select id="estado" name="estado" class="form-select" required>
+                            <option value="Pendiente">Pendiente</option>
+                            <option value="En proceso">En proceso</option>
+                            <option value="Listo para entrega">Listo para entrega</option>
+                            <option value="Entregado">Entregado</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="descripcion" class="form-label">Descripción:</label>
+                        <textarea id="descripcion" name="descripcion" class="form-control" required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="nombreCliente" class="form-label">Nombre del cliente:</label>
+                        <input type="text" id="nombreCliente" name="nombreCliente" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="correoCliente" class="form-label">Correo del cliente:</label>
+                        <input type="email" id="correoCliente" name="correoCliente" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="cantidad" class="form-label">Cantidad pedida:</label>
+                        <input type="number" id="cantidad" name="cantidad" class="form-control" min="1" required>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                        <button type="button" id="cerrarModal" class="btn btn-secondary">Cancelar</button>
+                    </div>
+                </form>
+            </dialog>
         </main>
     </div>
 

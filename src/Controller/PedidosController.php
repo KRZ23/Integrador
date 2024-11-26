@@ -94,3 +94,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'fetch') {
     }
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_GET['action'] === 'insertarPedido') {
+    header('Content-Type: application/json');
+    try {
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        $material = $data['material'];
+        $estado = $data['estado'];
+        $descripcion = $data['descripcion'];
+        $nombreCliente = $data['nombreCliente'];
+        $correoCliente = $data['correoCliente'];
+        $cantidad = $data['cantidad'];
+
+        // Validaciones adicionales aquí
+
+        $pedidoModel = new Conexion(); // Asegúrate de tener esta clase
+        $pedidoModel->AgregarPedidoConMaterial($material, $estado, $descripcion, $nombreCliente, $correoCliente, $cantidad);
+
+        echo json_encode(['success' => true, 'message' => 'Pedido insertado correctamente.']);
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    }
+    exit;
+}

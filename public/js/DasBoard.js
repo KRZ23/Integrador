@@ -35,3 +35,59 @@ document.getElementById('add-product-btn').addEventListener('click', () => {
 document.getElementById('generate-report-btn').addEventListener('click', () => {
     alert("Generando reporte...");
 });
+
+
+//Modal
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('modalFormulario');
+    const abrirModalBtn = document.getElementById('abrirModal');
+    const cerrarModalBtn = document.getElementById('cerrarModal');
+    const body = document.body;
+
+    // Abrir el modal con blur
+    abrirModalBtn.addEventListener('click', () => {
+        body.classList.add('modal-open');
+        modal.showModal(); // Mostrar el modal
+    });
+
+    // Cerrar el modal y quitar el blur
+    cerrarModalBtn.addEventListener('click', () => {
+        body.classList.remove('modal-open');
+        modal.close(); // Cerrar el modal
+    });
+
+    // Enviar el formulario
+    formPedido.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // Capturar los datos del formulario
+        const formData = new FormData(formPedido);
+        const pedidoData = Object.fromEntries(formData);
+
+        try {
+            // Enviar los datos al servidor
+            const response = await fetch('../../src/Controller/PedidosController.php?action=insertarPedido', {
+                method: 'POST',
+                body: JSON.stringify(pedidoData),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                alert('Pedido agregado exitosamente.');
+                body.classList.remove('modal-open');
+                modal.close();
+                formPedido.reset();
+                // Opcional: Recargar la lista de pedidos
+            } else {
+                alert(`Error: ${result.message}`);
+            }
+        } catch (error) {
+            console.error('Error al guardar el pedido:', error);
+            alert('Hubo un problema al guardar el pedido.');
+        }
+    });
+});

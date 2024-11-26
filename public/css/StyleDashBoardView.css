@@ -177,3 +177,26 @@ button:hover {
     font-weight: bold;
     color: #2c3e50; /* Color específico */
 }
+
+/* Blur effect on body when modal is open */
+body.modal-open {
+    filter: blur(4px);
+}
+
+/* Center the dialog */
+dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40%;
+    max-width: 500px;
+    border: none;
+    background: white;
+}
+
+/* Modal shadow and rounded corners */
+dialog.rounded-3 {
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
