@@ -57,37 +57,37 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Enviar el formulario
-    formPedido.addEventListener('submit', async (e) => {
-        e.preventDefault();
+        formPedido.addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-        // Capturar los datos del formulario
-        const formData = new FormData(formPedido);
-        const pedidoData = Object.fromEntries(formData);
+            // Capturar los datos del formulario
+            const formData = new FormData(formPedido);
+            const pedidoData = Object.fromEntries(formData);
 
-        try {
-            // Enviar los datos al servidor
-            const response = await fetch('../../src/Controller/PedidosController.php?action=insertarPedido', {
-                method: 'POST',
-                body: JSON.stringify(pedidoData),
-                headers: {
-                    'Content-Type': 'application/json'
+            try {
+                // Enviar los datos al servidor
+                const response = await fetch('../../src/Controller/PedidosController.php?action=insertarPedido', {
+                    method: 'POST',
+                    body: JSON.stringify(pedidoData),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Pedido agregado exitosamente.');
+                    body.classList.remove('modal-open');
+                    modal.close();
+                    formPedido.reset();
+                    // Opcional: Recargar la lista de pedidos
+                } else {
+                    alert(`Error: ${result.message}`);
                 }
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-                alert('Pedido agregado exitosamente.');
-                body.classList.remove('modal-open');
-                modal.close();
-                formPedido.reset();
-                // Opcional: Recargar la lista de pedidos
-            } else {
-                alert(`Error: ${result.message}`);
+            } catch (error) {
+                console.error('Error al guardar el pedido:', error);
+                alert('Hubo un problema al guardar el pedido.');
             }
-        } catch (error) {
-            console.error('Error al guardar el pedido:', error);
-            alert('Hubo un problema al guardar el pedido.');
-        }
+        });
     });
-});

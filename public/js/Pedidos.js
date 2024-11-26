@@ -55,6 +55,7 @@ class ElementFactory {
             <td>${pedido.nombre_usuario} ${pedido.apellido_usuario}</td>
             <td>${pedido.correo_usuario}</td>
             <td>${pedido.cantidad_pedido || 'Sin asignar'} cubos </td>
+            <td>${pedido.fecha_pedido}</td>
         `;
         return tr;
     }

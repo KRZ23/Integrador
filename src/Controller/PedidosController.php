@@ -54,7 +54,7 @@ class PedidoController {
     public function agregarPedido($data)
     {
         // Validar los datos recibidos
-        if (!isset($data['id_usuario'], $data['estado_material'], $data['descripcion'], $data['id_material'], $data['cantidad_pedido'])) {
+        if (!isset($data['id_usuario'], $data['estado_material'], $data['descripcion'], $data['id_material'], $data['cantidad_pedido'],$data['fecha_pedido'])) {
             return ["error" => "Datos insuficientes para crear un pedido."];
         }
 
@@ -64,7 +64,8 @@ class PedidoController {
             $data['estado_material'],
             $data['descripcion'],
             $data['id_material'],
-            $data['cantidad_pedido']
+            $data['cantidad_pedido'],
+            $data['fecha_pedido']
         );
 
         if ($resultado) {

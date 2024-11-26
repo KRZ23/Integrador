@@ -94,6 +94,7 @@
                             <th>Nombre del cliente</th>
                             <th>Correo del cliente</th>
                             <th>Cantidad Pedida</th>
+                            <th>Fecha</th>
                         </tr>
                     </thead>
                     <tbody id="pedidos-tbody">
@@ -101,10 +102,18 @@
                     </tbody>
                 </table>
             </section>
-            
+
             <dialog id="modalFormulario" class="rounded-3 shadow-lg">
-                <form id="formPedido" class="p-4" method="post">
+                <form id="formPedido" class="p-4">
                     <h3 class="text-center mb-4">Registrar Nuevo Pedido</h3>
+
+                    <!-- Campo para la fecha del pedido -->
+                    <div class="mb-3">
+                        <label for="fechaPedido" class="form-label">Fecha del Pedido:</label>
+                        <input type="date" id="fechaPedido" name="fechaPedido" class="form-control" required>
+                    </div>
+
+                    <!-- Otros campos del pedido -->
                     <div class="mb-3">
                         <label for="material" class="form-label">Material:</label>
                         <input type="text" id="material" name="material" class="form-control" required>
@@ -146,6 +155,7 @@
                     </div>
                 </form>
             </dialog>
+
         </main>
     </div>
 
