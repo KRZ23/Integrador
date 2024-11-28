@@ -146,7 +146,7 @@ class Conexion
         }
     }
 
-    public function AgregarPedidoConMaterial($id_usuario, $estado_material, $descripcion, $id_material, $cantidad_pedido)
+    public function AgregarPedidoConMaterial($id_usuario, $fecha_pedido, $estado_material, $descripcion, $id_material, $cantidad_pedido)
     {
         try {
             // Inicia una transacción

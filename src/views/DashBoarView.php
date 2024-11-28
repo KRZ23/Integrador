@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
+    header("Location: ../views/LoginView.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -104,7 +111,7 @@
             </section>
 
             <dialog id="modalFormulario" class="rounded-3 shadow-lg">
-                <form id="formPedido" class="p-4">
+                <form id="formPedido" class="p-4" method="post">
                     <h3 class="text-center mb-4">Registrar Nuevo Pedido</h3>
 
                     <!-- Campo para la fecha del pedido -->
@@ -137,6 +144,11 @@
                     <div class="mb-3">
                         <label for="nombreCliente" class="form-label">Nombre del cliente:</label>
                         <input type="text" id="nombreCliente" name="nombreCliente" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="apellidoCliente" class="form-label">Apellido del cliente:</label>
+                        <input type="text" id="apellidoCliente" name="apellidoCliente" class="form-control" required>
                     </div>
 
                     <div class="mb-3">

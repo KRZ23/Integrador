@@ -104,6 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_GET['action'] === 'insertarPedido
         $estado = $data['estado'];
         $descripcion = $data['descripcion'];
         $nombreCliente = $data['nombreCliente'];
+        $apellidoCliente = $data['apellidoCliente'];
         $correoCliente = $data['correoCliente'];
         $cantidad = $data['cantidad'];
 
