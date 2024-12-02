@@ -95,12 +95,11 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
                     <thead>
                         <tr>
                             <th>ID Pedido</th>
-                            <th>Material</th>
-                            <th>Estado</th>
+                            <th>Cliente</th>
+                            <th>Correo</th>
+                            <th>Productos</th>
                             <th>Descripción</th>
-                            <th>Nombre del cliente</th>
-                            <th>Correo del cliente</th>
-                            <th>Cantidad Pedida</th>
+                            <th>Estado</th>
                             <th>Fecha</th>
                         </tr>
                     </thead>
@@ -109,6 +108,7 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
                     </tbody>
                 </table>
             </section>
+
 
             <dialog id="modalFormulario" class="rounded-3 shadow-lg">
                 <form id="formPedido" class="p-4" method="post">

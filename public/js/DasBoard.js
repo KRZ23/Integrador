@@ -11,11 +11,6 @@ document.querySelectorAll('.sidebar a').forEach(link => {
         const targetId = link.getAttribute('href').slice(1);
         document.getElementById(targetId).classList.add('active');
         link.classList.add('active');
-
-        // Generar contenido dinámico (si es necesario)
-        if (targetId === 'pedidos') {
-            cargarPedidos(); // Solo se ejecuta al ir a la sección Pedidos
-        }
     });
 });
 

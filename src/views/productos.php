@@ -13,16 +13,6 @@
 	<title>PRODUCTOS</title>
 </head>
 <body>
-	<header>
-        <br>
-		<nav>
-			<a href="../../index.php" class="logo">INICIO</a>
-			<div>
-				<a href="../views/" id="cart"><img src="./img/FotosProducto/shopping-cart.png" alt=""><span id="cuenta-carrito">0</span></a>
-			</div>
-		</nav>
-        <br>
-	</header>
 	<main>
 		<section id="productos-container">
 		</section>

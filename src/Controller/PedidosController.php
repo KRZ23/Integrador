@@ -12,45 +12,43 @@ class PedidoController {
         $this->modelo = new Conexion(); 
     }
 
-    public function obtenerPedidos() {
+    public function obtenerPedidos()
+    {
         try {
             $pedidos = $this->modelo->obtenerPedidos();
-            if (empty($pedidos)) {
-                throw new Exception("No se encontraron pedidos.");
-            }
             echo json_encode([
                 'success' => true,
-                'data' => $pedidos
+                'pedidos' => $pedidos
             ]);
         } catch (Exception $e) {
             echo json_encode([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => 'Error al obtener los pedidos: ' . $e->getMessage()
             ]);
         }
-    }
+    }   
+    
 
-    public function actualizarEstadoPedido($idPedido, $nuevoEstado) {
-        try {
-            $resultado = $this->modelo->actualizarEstadoPedido($idPedido, $nuevoEstado);
-            if ($resultado) {
-                echo json_encode([
-                    'success' => true,
-                    'message' => 'Estado del pedido actualizado correctamente'
-                ]);
-            } else {
-                echo json_encode([
-                    'success' => false,
-                    'message' => 'No se pudo actualizar el estado del pedido'
-                ]);
-            }
-        } catch (Exception $e) {
-            echo json_encode([
-                'success' => false,
-                'message' => $e->getMessage()
-            ]);
-        }
+public function actualizarEstadoPedido($idPedido, $nuevoEstado)
+{
+    try {
+        $resultado = $this->modelo->actualizarEstadoPedido($idPedido, $nuevoEstado);
+
+        echo json_encode([
+            'success' => $resultado,
+            'message' => $resultado
+                ? 'Estado del pedido actualizado correctamente.'
+                : 'No se encontró el pedido o el estado no cambió.'
+        ]);
+    } catch (Exception $e) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Error al actualizar el estado del pedido: ' . $e->getMessage()
+        ]);
     }
+}
+
+    
     public function agregarPedido($data)
     {
         // Validar los datos recibidos
@@ -77,16 +75,44 @@ class PedidoController {
 }
 
 $controller = new PedidoController();
-
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'fetch') {
-    $controller->obtenerPedidos();
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $action = $_GET['action'] ?? null; // Uso de null coalescing operator
+    if ($action === 'fetch') {
+        $controller->obtenerPedidos();
+    } else {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Accion no valida en la solicitud GET.'
+        ]);
+    }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
     $idPedido = $data['idPedido'] ?? null;
     $nuevoEstado = $data['nuevoEstado'] ?? null;
 
     if ($idPedido && $nuevoEstado) {
-        $controller->actualizarEstadoPedido($idPedido, $nuevoEstado);
+        try {
+            // Intentamos actualizar el estado del pedido
+            $resultado = $controller->actualizarEstadoPedido($idPedido, $nuevoEstado);
+            
+            if ($resultado) {
+                echo json_encode([
+                    'success' => true,
+                    'message' => 'Estado del pedido actualizado correctamente'
+                ]);
+            } else {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'No se pudo actualizar el estado del pedido. Verifique el ID del pedido.'
+                ]);
+            }
+        } catch (Exception $e) {
+            // Capturamos cualquier error que ocurra durante la actualización
+            echo json_encode([
+                'success' => false,
+                'message' => 'Error al actualizar el estado del pedido: ' . $e->getMessage()
+            ]);
+        }
     } else {
         echo json_encode([
             'success' => false,
@@ -94,6 +120,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'fetch') {
         ]);
     }
 }
+
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_GET['action'] === 'insertarPedido') {
     header('Content-Type: application/json');
