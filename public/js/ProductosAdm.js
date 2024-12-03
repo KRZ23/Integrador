@@ -76,7 +76,7 @@ function crearFilaProducto(producto) {
     const imagen = new Image();
     imagen.src = producto.imagen;
     imagen.alt = producto.nombre;
-    imagen.style.maxWidth = "auto"; // Ajustar tamaño de imagen
+    imagen.style.maxWidth = "150px"; // Ajustar tamaño de imagen
     imagen.onerror = () => (imagen.src = "/src/views/img/FotosProducto/img.webp"); // Placeholder en caso de error
     colImagen.appendChild(imagen);
     fila.appendChild(colImagen);
