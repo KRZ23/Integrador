@@ -63,7 +63,7 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
 
             <section id="productos" class="section">
                 <h2>Gestión de Productos</h2>
-                <button id="add-product-btn"><i class="fa-solid fa-plus"></i> Añadir Producto</button>
+                <button id="agregarProductos"><i class="fa-solid fa-plus"></i> Añadir Producto</button>
                 <table class="table">
                     <thead>
                         <tr>
@@ -73,6 +73,7 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
                             <th>Descripción</th>
                             <th>Precio</th>
                             <th>Categoría</th>
+                            <th>Stock</th>
                         </tr>
                     </thead>
                     <tbody id="productos-table-body">
@@ -108,24 +109,52 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
                     </tbody>
                 </table>
             </section>
+<dialog id="AgregarProducto" class="rounded-3 shadow-lg">
+<form id="form-agregar-producto" method="post">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
 
+        <label for="descripcion">Descripción:</label>
+        <textarea id="descripcion" name="descripcion"></textarea>
 
-            <dialog id="modalFormulario" class="rounded-3 shadow-lg">
+        <label for="precio">Precio:</label>
+        <input type="number" id="precio" name="precio" step="0.01" required>
+
+        <label for="imagen">URL Imagen:</label>
+        <input type="text" id="imagen" name="imagen">
+
+        <label for="categoria">Categoría:</label>
+        <input type="text" id="categoria" name="categoria" required>
+
+        <label for="stock">Stock:</label>
+        <input type="number" id="stock" name="stock" required>
+
+        <button type="submit">Agregar Producto</button>
+        <button type="button" id="cerrarProductos" class="btn btn-secondary">Cancelar</button>
+    </form>
+</dialog>
+            <!-- <dialog id="modalFormulario" class="rounded-3 shadow-lg">
                 <form id="formPedido" class="p-4" method="post">
                     <h3 class="text-center mb-4">Registrar Nuevo Pedido</h3>
 
-                    <!-- Campo para la fecha del pedido -->
                     <div class="mb-3">
                         <label for="fechaPedido" class="form-label">Fecha del Pedido:</label>
-                        <input type="date" id="fechaPedido" name="fechaPedido" class="form-control" required>
+                        <input type="date" id="fechaPedido" name="fecha_pedido" class="form-control" required>
                     </div>
 
-                    <!-- Otros campos del pedido -->
                     <div class="mb-3">
-                        <label for="material" class="form-label">Material:</label>
-                        <input type="text" id="material" name="material" class="form-control" required>
+                        <label for="nombreUsuario" class="form-label">Nombre del Usuario:</label>
+                        <input type="text" id="nombreUsuario" name="nombre_usuario" class="form-control" required>
                     </div>
 
+                    <div class="mb-3">
+                        <label for="producto" class="form-label">Producto:</label>
+                        <select id="producto" name="id_producto" class="form-select" required>
+
+                        </select>
+                    </div>
+
+                    
                     <div class="mb-3">
                         <label for="estado" class="form-label">Estado:</label>
                         <select id="estado" name="estado" class="form-select" required>
@@ -142,21 +171,6 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
                     </div>
 
                     <div class="mb-3">
-                        <label for="nombreCliente" class="form-label">Nombre del cliente:</label>
-                        <input type="text" id="nombreCliente" name="nombreCliente" class="form-control" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="apellidoCliente" class="form-label">Apellido del cliente:</label>
-                        <input type="text" id="apellidoCliente" name="apellidoCliente" class="form-control" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="correoCliente" class="form-label">Correo del cliente:</label>
-                        <input type="email" id="correoCliente" name="correoCliente" class="form-control" required>
-                    </div>
-
-                    <div class="mb-3">
                         <label for="cantidad" class="form-label">Cantidad pedida:</label>
                         <input type="number" id="cantidad" name="cantidad" class="form-control" min="1" required>
                     </div>
@@ -166,8 +180,7 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
                         <button type="button" id="cerrarModal" class="btn btn-secondary">Cancelar</button>
                     </div>
                 </form>
-            </dialog>
-
+            </dialog>  -->
         </main>
     </div>
 

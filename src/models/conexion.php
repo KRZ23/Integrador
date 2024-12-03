@@ -85,6 +85,28 @@ class Conexion
         }
     }
 
+    public function agregarProducto($nombre, $descripcion, $precio, $imagen, $categoria, $stock)
+    {
+        try {
+            $query = "INSERT INTO bd_piedradeagua.productos 
+                    (nombre_producto, descripcion_producto, precio_producto, imagen, id_categoria, stock)
+                    VALUES (:nombre, :descripcion, :precio, :imagen, :categoria, :stock)";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':nombre', $nombre);
+            $stmt->bindParam(':descripcion', $descripcion);
+            $stmt->bindParam(':precio', $precio);
+            $stmt->bindParam(':imagen', $imagen);
+            $stmt->bindParam(':categoria', $categoria);
+            $stmt->bindParam(':stock', $stock);
+            $stmt->execute();
+
+            return true; // Indica éxito
+        } catch (PDOException $e) {
+            error_log("Error en agregarProducto: " . $e->getMessage());
+            return false; // Indica error
+        }
+    }
+
     public function obtenerPedidos()
     {
         try {
@@ -130,74 +152,74 @@ class Conexion
 
 
             if ($stmt->rowCount() === 0) {
-                return false; 
+                return false;
             }
 
-            return true; 
+            return true;
         } catch (PDOException $e) {
             error_log("Error al actualizar el estado del pedido: " . $e->getMessage());
             throw new Exception("Error al actualizar el estado del pedido.");
         }
     }
 
-    public function AgregarPedidoConMaterial($id_usuario, $fecha_pedido, $estado_material, $descripcion, $id_producto, $cantidad_pedido)
-    {
-        try {
-            // Inicia una transacción
-            $this->conn->beginTransaction();
-    
-            // Consulta con cláusula WITH para insertar en pedido y luego en pedido_productos
-            $sql = "
-            WITH nuevo_pedido AS (
-                INSERT INTO bd_piedradeagua.pedido (
-                    id_usuario, 
-                    fecha_pedido, 
-                    estado_material, 
-                    desc_pedido
-                ) VALUES (
-                    :id_usuario, 
-                    :fecha_pedido, 
-                    :estado_material, 
-                    :descripcion
-                )
-                RETURNING id_pedido
-            )
-            INSERT INTO bd_piedradeagua.pedido_productos (
-                id_pedido, 
-                id_producto, 
-                cantidad_pedido
-            )
-            VALUES (
-                (SELECT id_pedido FROM nuevo_pedido), 
-                :id_producto, 
-                :cantidad_pedido
-            );
-            ";
-            $stmt = $this->conn->prepare($sql);
-    
-            // Enlaza los parámetros
-            $stmt->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
-            $stmt->bindParam(':fecha_pedido', $fecha_pedido, PDO::PARAM_STR);
-            $stmt->bindParam(':estado_material', $estado_material, PDO::PARAM_STR);
-            $stmt->bindParam(':descripcion', $descripcion, PDO::PARAM_STR);
-            $stmt->bindParam(':id_producto', $id_producto, PDO::PARAM_INT);
-            $stmt->bindParam(':cantidad_pedido', $cantidad_pedido, PDO::PARAM_INT);
-    
-            // Ejecuta la consulta
-            $stmt->execute();
-    
-            // Confirma la transacción
-            $this->conn->commit();
-    
-            return true; // Operación exitosa
-        } catch (PDOException $e) {
-            // En caso de error, deshace la transacción
-            $this->conn->rollBack();
-            echo "Error: " . $e->getMessage();
-            return false; // Operación fallida
-        }
-    }
-    
+    // public function AgregarPedidoConMaterial($id_usuario, $fecha_pedido, $estado_material, $descripcion, $id_producto, $cantidad_pedido)
+    // {
+    //     try {
+    //         // Inicia una transacción
+    //         $this->conn->beginTransaction();
+
+    //         // Consulta con cláusula WITH para insertar en pedido y luego en pedido_productos
+    //         $sql = "
+    //         WITH nuevo_pedido AS (
+    //             INSERT INTO bd_piedradeagua.pedido (
+    //                 id_usuario, 
+    //                 fecha_pedido, 
+    //                 estado_material, 
+    //                 desc_pedido
+    //             ) VALUES (
+    //                 :id_usuario, 
+    //                 :fecha_pedido, 
+    //                 :estado_material, 
+    //                 :descripcion
+    //             )
+    //             RETURNING id_pedido
+    //         )
+    //         INSERT INTO bd_piedradeagua.pedido_productos (
+    //             id_pedido, 
+    //             id_producto, 
+    //             cantidad_pedido
+    //         )
+    //         VALUES (
+    //             (SELECT id_pedido FROM nuevo_pedido), 
+    //             :id_producto, 
+    //             :cantidad_pedido
+    //         );
+    //         ";
+    //         $stmt = $this->conn->prepare($sql);
+
+    //         // Enlaza los parámetros
+    //         $stmt->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
+    //         $stmt->bindParam(':fecha_pedido', $fecha_pedido, PDO::PARAM_STR);
+    //         $stmt->bindParam(':estado_material', $estado_material, PDO::PARAM_STR);
+    //         $stmt->bindParam(':descripcion', $descripcion, PDO::PARAM_STR);
+    //         $stmt->bindParam(':id_producto', $id_producto, PDO::PARAM_INT);
+    //         $stmt->bindParam(':cantidad_pedido', $cantidad_pedido, PDO::PARAM_INT);
+
+    //         // Ejecuta la consulta
+    //         $stmt->execute();
+
+    //         // Confirma la transacción
+    //         $this->conn->commit();
+
+    //         return true; // Operación exitosa
+    //     } catch (PDOException $e) {
+    //         // En caso de error, deshace la transacción
+    //         $this->conn->rollBack();
+    //         echo "Error: " . $e->getMessage();
+    //         return false; // Operación fallida
+    //     }
+    // }
+
 
     public function mostrarUsuarios()
     {
@@ -220,4 +242,85 @@ class Conexion
             throw new Exception("Error al mostrar usuarios: " . $e->getMessage());
         }
     }
+
+//     public function obtenerUsuarioPorNombre($nombreUsuario)
+//     {
+//         $sql = "SELECT id_usuario FROM bd_piedradeagua.usuario WHERE nombre_usuario = :nombre";
+//         $stmt = $this->conn->prepare($sql);
+//         $stmt->bindParam(':nombre', $nombreUsuario, PDO::PARAM_STR);
+//         $stmt->execute();
+
+//         return $stmt->fetch(PDO::FETCH_ASSOC);
+//     }
+
+//     public function obtenerProductoPorId($idProducto)
+//     {
+//         try {
+//             $sql = "SELECT id_producto, nombre_producto FROM bd_piedradeagua.productos";
+//             $stmt = $this->conn->query($sql);
+//             return $stmt->fetchAll(PDO::FETCH_ASSOC);
+//         } catch (PDOException $e) {
+//             error_log("Error al obtener productos: " . $e->getMessage());
+//             throw new Exception("Error al obtener productos de la base de datos.");
+//         }
+//     }
+
+//     public function agregarPedidoConProductos($idUsuario, $fechaPedido, $estadoMaterial, $descPedido, $productos)
+//     {
+//         try {
+//             $this->conn->beginTransaction();
+
+//             // Consulta para insertar un pedido y obtener su ID
+//             $queryPedido = "
+//             WITH nuevo_pedido AS (
+//                 INSERT INTO bd_piedradeagua.pedido (
+//                     id_usuario, 
+//                     fecha_pedido, 
+//                     estado_material, 
+//                     desc_pedido
+//                 ) VALUES (
+//                     :idUsuario, 
+//                     :fechaPedido, 
+//                     :estadoMaterial, 
+//                     :descPedido
+//                 )
+//                 RETURNING id_pedido
+//             )
+//             INSERT INTO bd_piedradeagua.pedido_productos (
+//                 id_pedido, 
+//                 id_producto, 
+//                 cantidad_pedido
+//             )
+//             VALUES (
+//                 (SELECT id_pedido FROM nuevo_pedido), 
+//                 :idProducto, 
+//                 :cantidadPedido
+//             );
+//         ";
+
+//             // Preparar la consulta
+//             $stmt = $this->conn->prepare($queryPedido);
+
+//             foreach ($productos as $producto) {
+//                 $stmt->bindParam(':idUsuario', $idUsuario, PDO::PARAM_INT);
+//                 $stmt->bindParam(':fechaPedido', $fechaPedido, PDO::PARAM_STR);
+//                 $stmt->bindParam(':estadoMaterial', $estadoMaterial, PDO::PARAM_STR);
+//                 $stmt->bindParam(':descPedido', $descPedido, PDO::PARAM_STR);
+//                 $stmt->bindParam(':idProducto', $producto['id_producto'], PDO::PARAM_INT);
+//                 $stmt->bindParam(':cantidadPedido', $producto['cantidad'], PDO::PARAM_INT);
+
+//                 // Ejecutar la consulta para cada producto
+//                 $stmt->execute();
+//             }
+
+//             // Confirmar la transacción
+//             $this->conn->commit();
+
+//             return ['success' => true];
+//         } catch (PDOException $e) {
+//             $this->conn->rollBack();
+//             error_log("Error al agregar pedido: " . $e->getMessage());
+//             return ['success' => false, 'message' => $e->getMessage()];
+//         }
+//     }
 }

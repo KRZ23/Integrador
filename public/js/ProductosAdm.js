@@ -1,12 +1,13 @@
 // Clase ProductoReal para manejar productos existentes
 class ProductoReal {
-    constructor(id, nombre, descripcion, precio, imagen, categoria) {
+    constructor(id, nombre, descripcion, precio, imagen, categoria, stock) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
         this.imagen = imagen;
         this.categoria = categoria;
+        this.stock = stock;
     }
 }
 
@@ -19,6 +20,7 @@ class ProductoPlaceholder {
         this.precio = "N/A";
         this.imagen = "/src/views/img/FotosProducto/img.webp";
         this.categoria = "N/A";
+        this.stock = 'N/A';
     }
 }
 
@@ -32,7 +34,8 @@ class ProductoFactory {
                 data.descripcion_producto,
                 data.precio_producto,
                 data.imagen,
-                data.id_categoria
+                data.id_categoria,
+                data.stock,
             );
         } else {
             return new ProductoPlaceholder();
@@ -106,6 +109,10 @@ function crearFilaProducto(producto) {
     colCategoria.textContent = producto.categoria;
     fila.appendChild(colCategoria);
 
+    const colStock = document.createElement("td");
+    colStock.textContent = producto.stock;
+    fila.appendChild(colStock);
+
     return fila;
 }
 
@@ -119,4 +126,52 @@ fetch('/src/Controller/ProductosController.php')
     .catch(error => {
         console.error("Error al cargar productos:", error);
         mostrarProductosEnTabla([]); // Mostrar un placeholder si hay error
+    });
+
+    document.getElementById("form-agregar-producto").addEventListener("submit", async (e) => {
+        e.preventDefault(); // Evitar recargar la página
+    
+        const nombre = document.getElementById("nombre").value;
+        const descripcion = document.getElementById("descripcion").value;
+        const precio = document.getElementById("precio").value;
+        const imagen = document.getElementById("imagen").value;
+        const categoria = document.getElementById("categoria").value;
+        const stock = document.getElementById("stock").value;
+    
+        const producto = { nombre, descripcion, precio, imagen, categoria, stock };
+    
+        try {
+            const response = await fetch('/src/Controller/ProductosController.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(producto),
+            });
+    
+            const resultado = await response.json();
+            alert(resultado.mensaje);
+        } catch (error) {
+            console.error("Error al agregar el producto:", error);
+            alert("Hubo un error al agregar el producto.");
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const modalP = document.getElementById('AgregarProducto');
+        const abrirModalProd = document.getElementById('agregarProductos');
+        const cerrarModalProd = document.getElementById('cerrarProductos');
+        const body = document.body;
+    
+        // Abrir el modal con blur
+        abrirModalProd.addEventListener('click', () => {
+            body.classList.add('modal-open');
+            modalP.showModal(); // Mostrar el modal
+        });
+    
+        // Cerrar el modal y quitar el blur
+        cerrarModalProd.addEventListener('click', () => {
+            body.classList.remove('modal-open');
+            modalP.close(); // Cerrar el modal
+        })
     });

@@ -32,7 +32,6 @@ document.getElementById('generate-report-btn').addEventListener('click', () => {
 });
 
 
-//Modal
 document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('modalFormulario');
     const abrirModalBtn = document.getElementById('abrirModal');
@@ -51,38 +50,88 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.close(); // Cerrar el modal
     });
 
-    // Enviar el formulario
-        formPedido.addEventListener('submit', async (e) => {
-            e.preventDefault();
+    // async function cargarProductos() {
+    //     try {
+    //         const response = await fetch("ProductosController.php");
+    //         if (!response.ok) {
+    //             throw new Error("Error al obtener los productos.");
+    //         }
+    //         const productos = await response.json();
 
-            // Capturar los datos del formulario
-            const formData = new FormData(formPedido);
-            const pedidoData = Object.fromEntries(formData);
+    //         // Llenar el select con los productos
+    //         productosSelect.innerHTML = "<option value=''>Selecciona un producto</option>";
+    //         productos.forEach(producto => {
+    //             const option = document.createElement("option");
+    //             option.value = producto.id_producto;
+    //             option.textContent = producto.nombre_producto;
+    //             productosSelect.appendChild(option);
+    //         });
+    //     } catch (error) {
+    //         console.error(error);
+    //         alert("No se pudieron cargar los productos.");
+    //     }
+    // }
 
+    // // Función para cargar detalles del producto seleccionado
+    // async function cargarDetalleProducto(idProducto) {
+    //     try {
+    //         const response = await fetch(`../../src/Controller/ProductosController.php?id_producto=${idProducto}`);
+    //         if (!response.ok) {
+    //             throw new Error("Error al obtener el detalle del producto.");
+    //         }
+    //         const producto = await response.json();
+    //         productoDetalle.innerHTML = `
+    //             <h2>Detalles del Producto</h2>
+    //             <p><strong>Nombre:</strong> ${producto.nombre_producto}</p>
+    //             <p><strong>Descripción:</strong> ${producto.descripcion_producto}</p>
+    //             <p><strong>Precio:</strong> $${producto.precio_producto}</p>
+    //         `;
+    //     } catch (error) {
+    //         console.error(error);
+    //         productoDetalle.innerHTML = "<p>Error al cargar los detalles del producto.</p>";
+    //     }
+    // }
+
+    // // Event listener para el cambio en el select
+    // productosSelect.addEventListener("change", (event) => {
+    //     const idProducto = event.target.value;
+    //     if (idProducto) {
+    //         cargarDetalleProducto(idProducto);
+    //     } else {
+    //         productoDetalle.innerHTML = "";
+    //     }
+    // });
+
+    // // Cargar los productos al cargar la página
+    // cargarProductos();
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const productosLista = document.getElementById("productos-lista");
+    
+        // Función para cargar los productos
+        async function cargarProductos() {
             try {
-                // Enviar los datos al servidor
-                const response = await fetch('../../src/Controller/PedidosController.php?action=insertarPedido', {
-                    method: 'POST',
-                    body: JSON.stringify(pedidoData),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    alert('Pedido agregado exitosamente.');
-                    body.classList.remove('modal-open');
-                    modal.close();
-                    formPedido.reset();
-                    // Opcional: Recargar la lista de pedidos
-                } else {
-                    alert(`Error: ${result.message}`);
+                const response = await fetch("../../src/Controller/ProductosController.php");
+                if (!response.ok) {
+                    throw new Error("Error al obtener los productos.");
                 }
+    
+                const productos = await response.json();
+    
+                // Llenar la lista con los productos
+                productos.forEach(producto => {
+                    const listItem = document.createElement("li");
+                    listItem.textContent = `${producto.nombre_producto} - $${producto.precio_producto}`;
+                    productosLista.appendChild(listItem);
+                });
             } catch (error) {
-                console.error('Error al guardar el pedido:', error);
-                alert('Hubo un problema al guardar el pedido.');
+                console.error(error);
+                productosLista.innerHTML = "<li>Error al cargar los productos.</li>";
             }
-        });
+        }
+    
+        // Llamar a la función para cargar los productos
+        cargarProductos();
     });
+    
+});
