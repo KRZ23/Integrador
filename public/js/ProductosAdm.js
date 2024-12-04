@@ -128,50 +128,92 @@ fetch('/src/Controller/ProductosController.php')
         mostrarProductosEnTabla([]); // Mostrar un placeholder si hay error
     });
 
-    document.getElementById("form-agregar-producto").addEventListener("submit", async (e) => {
-        e.preventDefault(); // Evitar recargar la página
+    // document.getElementById("form-agregar-producto").addEventListener("submit", async (e) => {
+    //     e.preventDefault(); // Evitar recargar la página
     
-        const nombre = document.getElementById("nombre").value;
-        const descripcion = document.getElementById("descripcion").value;
-        const precio = document.getElementById("precio").value;
-        const imagen = document.getElementById("imagen").value;
-        const categoria = document.getElementById("categoria").value;
-        const stock = document.getElementById("stock").value;
+    //     const nombre = document.getElementById("nombre").value;
+    //     const descripcion = document.getElementById("descripcion").value;
+    //     const precio = document.getElementById("precio").value;
+    //     const imagen = document.getElementById("imagen").value;
+    //     const categoria = document.getElementById("categoria").value;
+    //     const stock = document.getElementById("stock").value;
     
-        const producto = { nombre, descripcion, precio, imagen, categoria, stock };
+    //     const producto = { nombre, descripcion, precio, imagen, categoria, stock };
     
-        try {
-            const response = await fetch('/src/Controller/ProductosController.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(producto),
-            });
+    //     try {
+    //         const response = await fetch('/src/Controller/ProductosController.php', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify(producto),
+    //         });
     
-            const resultado = await response.json();
-            alert(resultado.mensaje);
-        } catch (error) {
-            console.error("Error al agregar el producto:", error);
-            alert("Hubo un error al agregar el producto.");
-        }
-    });
+    //         const resultado = await response.json();
+    //         alert(resultado.mensaje);
+    //     } catch (error) {
+    //         console.error("Error al agregar el producto:", error);
+    //         alert("Hubo un error al agregar el producto.");
+    //     }
+    // });
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const modalP = document.getElementById('AgregarProducto');
-        const abrirModalProd = document.getElementById('agregarProductos');
-        const cerrarModalProd = document.getElementById('cerrarProductos');
-        const body = document.body;
+    // document.addEventListener('DOMContentLoaded', () => {
+    //     const modalP = document.getElementById('AgregarProducto');
+    //     const abrirModalProd = document.getElementById('agregarProductos');
+    //     const cerrarModalProd = document.getElementById('cerrarProductos');
+    //     const body = document.body;
     
-        // Abrir el modal con blur
-        abrirModalProd.addEventListener('click', () => {
-            body.classList.add('modal-open');
-            modalP.showModal(); // Mostrar el modal
+    //     // Abrir el modal con blur
+    //     abrirModalProd.addEventListener('click', () => {
+    //         body.classList.add('modal-open');
+    //         modalP.showModal(); // Mostrar el modal
+    //     });
+    
+    //     // Cerrar el modal y quitar el blur
+    //     cerrarModalProd.addEventListener('click', () => {
+    //         body.classList.remove('modal-open');
+    //         modalP.close(); // Cerrar el modal
+    //     })
+    // });
+    // Manejo del modal para agregar producto
+
+const modal = document.getElementById("modalProducto");
+const openModalBtn = document.getElementById("btnAbrirModal");
+const closeModalBtn = document.getElementById("btnCerrarModal");
+
+openModalBtn.addEventListener("click", () => {
+    modal.style.display = "block";
+});
+
+closeModalBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+});
+
+// Manejo del envío del formulario
+document.querySelector("#formularioProducto").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(this); // Crear FormData para incluir la imagen
+
+    try {
+        const response = await fetch("/src/Controller/ProductosController.php?action=agregar", {
+            method: "POST",
+            body: formData,
         });
-    
-        // Cerrar el modal y quitar el blur
-        cerrarModalProd.addEventListener('click', () => {
-            body.classList.remove('modal-open');
-            modalP.close(); // Cerrar el modal
-        })
-    });
+
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+        const data = await response.json();
+
+        if (data.error) {
+            alert(`Error: ${data.error}`);
+        } else if (data.success) {
+            alert(data.success);
+            this.reset(); // Limpiar el formulario
+            modal.style.display = "none"; // Cerrar modal tras éxito
+        }
+    } catch (error) {
+        console.error("Error al agregar el producto:", error);
+        alert("Ocurrió un error al procesar tu solicitud.");
+    }
+});

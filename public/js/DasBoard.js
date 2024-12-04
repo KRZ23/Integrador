@@ -21,11 +21,6 @@ document.getElementById('logout-btn').addEventListener('click', () => {
     alert("Cerrando sesión...");
 });
 
-// Ejemplo de añadir producto (provisional)
-document.getElementById('add-product-btn').addEventListener('click', () => {
-    alert("Abrir modal para añadir producto.");
-});
-
 // Generar reporte (provisional)
 document.getElementById('generate-report-btn').addEventListener('click', () => {
     alert("Generando reporte...");

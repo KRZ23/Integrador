@@ -63,7 +63,7 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
 
             <section id="productos" class="section">
                 <h2>Gestión de Productos</h2>
-                <button id="agregarProductos"><i class="fa-solid fa-plus"></i> Añadir Producto</button>
+                <button id="btnAbrirModal">Agregar Producto</button>
                 <table class="table">
                     <thead>
                         <tr>
@@ -109,32 +109,37 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
                     </tbody>
                 </table>
             </section>
-<dialog id="AgregarProducto" class="rounded-3 shadow-lg">
-<form id="form-agregar-producto" method="post">
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required>
 
-        <label for="descripcion">Descripción:</label>
-        <textarea id="descripcion" name="descripcion"></textarea>
 
-        <label for="precio">Precio:</label>
-        <input type="number" id="precio" name="precio" step="0.01" required>
+            <div id="modalProducto" class="modal">
+        <div class="modal-content">
+            <span id="btnCerrarModal" class="close">&times;</span>
+            <h2>Agregar Producto</h2>
+            <form id="formularioProducto" enctype="multipart/form-data">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required>
 
-        <label for="imagen">URL Imagen:</label>
-        <input type="text" id="imagen" name="imagen">
+                <label for="descripcion">Descripción:</label>
+                <textarea id="descripcion" name="descripcion" required></textarea>
 
-        <label for="categoria">Categoría:</label>
-        <input type="text" id="categoria" name="categoria" required>
+                <label for="precio">Precio:</label>
+                <input type="number" id="precio" name="precio" step="0.01" required>
 
-        <label for="stock">Stock:</label>
-        <input type="number" id="stock" name="stock" required>
+                <label for="categoria">Categoría:</label>
+                <input type="text" id="categoria" name="categoria" required>
 
-        <button type="submit">Agregar Producto</button>
-        <button type="button" id="cerrarProductos" class="btn btn-secondary">Cancelar</button>
-    </form>
-</dialog>
+                <label for="stock">Stock:</label>
+                <input type="number" id="stock" name="stock" required>
+
+                <label for="imagen">Imagen:</label>
+                <input type="file" id="imagen" name="imagen" accept=".png, .jpg, .jpeg, .webp" required>
+
+                <button type="submit">Agregar Producto</button>
+            </form>
+        </div>
+    </div>
             <!-- <dialog id="modalFormulario" class="rounded-3 shadow-lg">
-                <form id="formPedido" class="p-4" method="post">
+            <form action="../Controller/ProductosController.php?action=agregar" method="POST" enctype="multipart/form-data">
                     <h3 class="text-center mb-4">Registrar Nuevo Pedido</h3>
 
                     <div class="mb-3">
