@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
+if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 2) {
     header("Location: ../views/LoginView.php");
     exit();
 }
@@ -92,7 +92,8 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
             </section>
 
             <section id="pedidos" class="section">
-                <button id="abrirModal" class="btn btn-primary">Agregar Pedido</button>
+                <h2>Gestión de Pedidos</h2>
+                <button id="btnAbrirModalPedido">Agregar Pedido</button>
                 <table class="table">
                     <thead>
                         <tr>
@@ -113,80 +114,56 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
 
 
             <div id="modalProducto" class="modal">
-        <div class="modal-content">
-            <span id="btnCerrarModal" class="close">&times;</span>
-            <h2>Agregar Producto</h2>
-            <form id="formularioProducto" enctype="multipart/form-data">
-                <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre" required>
+                <div class="modal-content">
+                    <span id="btnCerrarModal" class="close">&times;</span>
+                    <h2>Agregar Producto</h2>
+                    <form id="formularioProducto" enctype="multipart/form-data">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" id="nombre" name="nombre" required>
 
-                <label for="descripcion">Descripción:</label>
-                <textarea id="descripcion" name="descripcion" required></textarea>
+                        <label for="descripcion">Descripción:</label>
+                        <textarea id="descripcion" name="descripcion" required></textarea>
 
-                <label for="precio">Precio:</label>
-                <input type="number" id="precio" name="precio" step="0.01" required>
+                        <label for="precio">Precio:</label>
+                        <input type="number" id="precio" name="precio" step="0.01" required>
 
-                <label for="categoria">Categoría:</label>
-                <input type="text" id="categoria" name="categoria" required>
+                        <label for="categoria">Categoría:</label>
+                        <input type="text" id="categoria" name="categoria" required>
 
-                <label for="stock">Stock:</label>
-                <input type="number" id="stock" name="stock" required>
+                        <label for="stock">Stock:</label>
+                        <input type="number" id="stock" name="stock" required>
 
-                <label for="imagen">Imagen:</label>
-                <input type="file" id="imagen" name="imagen" accept=".png, .jpg, .jpeg, .webp" required>
+                        <label for="imagen">Imagen:</label>
+                        <input type="file" id="imagen" name="imagen" accept=".png, .jpg, .jpeg, .webp" required>
 
-                <button type="submit">Agregar Producto</button>
-            </form>
-        </div>
-    </div>
-            <!-- <dialog id="modalFormulario" class="rounded-3 shadow-lg">
-            <form action="../Controller/ProductosController.php?action=agregar" method="POST" enctype="multipart/form-data">
-                    <h3 class="text-center mb-4">Registrar Nuevo Pedido</h3>
-
-                    <div class="mb-3">
-                        <label for="fechaPedido" class="form-label">Fecha del Pedido:</label>
-                        <input type="date" id="fechaPedido" name="fecha_pedido" class="form-control" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="nombreUsuario" class="form-label">Nombre del Usuario:</label>
-                        <input type="text" id="nombreUsuario" name="nombre_usuario" class="form-control" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="producto" class="form-label">Producto:</label>
-                        <select id="producto" name="id_producto" class="form-select" required>
-
+                        <button type="submit">Agregar Producto</button>
+                    </form>
+                </div>
+            </div>
+            <div id="modalPedido" class="modal">
+                <div class="modal-content">
+                    <span id="btnCerrarModalPedido" class="close">&times;</span>
+                    <h2>Agregar Pedido</h2>
+                    <form id="formularioPedido">
+                        <label for="usuario">Usuario:</label>
+                        <select id="usuario" name="usuario" required>
+                            <!-- Opciones dinámicas cargadas desde la base de datos -->
                         </select>
-                    </div>
 
-                    
-                    <div class="mb-3">
-                        <label for="estado" class="form-label">Estado:</label>
-                        <select id="estado" name="estado" class="form-select" required>
-                            <option value="Pendiente">Pendiente</option>
-                            <option value="En proceso">En proceso</option>
-                            <option value="Listo para entrega">Listo para entrega</option>
-                            <option value="Entregado">Entregado</option>
-                        </select>
-                    </div>
+                        <label for="fecha_pedido">Fecha del Pedido:</label>
+                        <input type="datetime-local" id="fecha_pedido" required>
 
-                    <div class="mb-3">
-                        <label for="descripcion" class="form-label">Descripción:</label>
-                        <textarea id="descripcion" name="descripcion" class="form-control" required></textarea>
-                    </div>
+                        <label for="desc_pedido">Descripción:</label>
+                        <input type="text" id="desc_pedido" required>
+                        <div id="productosContainer">
+                            <!-- Productos dinámicos -->
+                        </div>
+                        <button type="button" id="btnAgregarProducto">Agregar Producto</button>
 
-                    <div class="mb-3">
-                        <label for="cantidad" class="form-label">Cantidad pedida:</label>
-                        <input type="number" id="cantidad" name="cantidad" class="form-control" min="1" required>
-                    </div>
-
-                    <div class="d-flex justify-content-between">
-                        <button type="submit" class="btn btn-success">Guardar</button>
-                        <button type="button" id="cerrarModal" class="btn btn-secondary">Cancelar</button>
-                    </div>
-                </form>
-            </dialog>  -->
+                        <button type="submit">Guardar Pedido</button>
+                    </form>
+                </div>
+            </div>
         </main>
     </div>
 

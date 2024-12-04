@@ -49,8 +49,45 @@ class PedidoController
             ]);
         }
     }
+
+    public function agregarPedido() {
+        try {
+            $data = json_decode(file_get_contents("php://input"), true);
+
+            $idUsuario = $data['usuario'] ?? null;
+            $fechaPedido = $data['fecha_pedido'] ?? null;
+            $estadoMaterial = $data['estado_material'] ?? 'Pendiente'; // Estado predeterminado
+            $descPedido = $data['desc_pedido'] ?? null;
+            $idProducto = $data['producto'] ?? null;
+            $cantidad = $data['cantidad'] ?? null;
+
+            if (!$idUsuario || !$fechaPedido || !$descPedido || !$idProducto || !$cantidad) {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Todos los campos son obligatorios.'
+                ]);
+                return;
+            }
+
+            $pedidoModel = new Conexion();
+            $pedidoModel->insertarPedidoConProductos($idUsuario, $fechaPedido, $estadoMaterial, $descPedido, $idProducto, $cantidad);
+
+            echo json_encode([
+                'success' => true,
+                'message' => 'Pedido agregado exitosamente.'
+            ]);
+        } catch (Exception $e) {
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
 }
 
+if ($_GET['action'] === 'agregar') {
+    $controller->agregarPedido($_POST);
+}
 $controller = new PedidoController();
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $action = $_GET['action'] ?? null; // Uso de null coalescing operator
@@ -69,7 +106,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     if ($idPedido && $nuevoEstado) {
         try {
-            // Intentamos actualizar el estado del pedido
             $resultado = $controller->actualizarEstadoPedido($idPedido, $nuevoEstado);
 
             if ($resultado) {
