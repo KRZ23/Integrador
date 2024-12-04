@@ -5,11 +5,13 @@ error_reporting(E_ALL);
 
 include '../models/conexion.php';
 
-class PedidoController {
+class PedidoController
+{
     private $modelo;
 
-    public function __construct() {
-        $this->modelo = new Conexion(); 
+    public function __construct()
+    {
+        $this->modelo = new Conexion();
     }
 
     public function obtenerPedidos()
@@ -26,64 +28,27 @@ class PedidoController {
                 'message' => 'Error al obtener los pedidos: ' . $e->getMessage()
             ]);
         }
-    }   
-    
-
-public function actualizarEstadoPedido($idPedido, $nuevoEstado)
-{
-    try {
-        $resultado = $this->modelo->actualizarEstadoPedido($idPedido, $nuevoEstado);
-
-        echo json_encode([
-            'success' => $resultado,
-            'message' => $resultado
-                ? 'Estado del pedido actualizado correctamente.'
-                : 'No se encontró el pedido o el estado no cambió.'
-        ]);
-    } catch (Exception $e) {
-        echo json_encode([
-            'success' => false,
-            'message' => 'Error al actualizar el estado del pedido: ' . $e->getMessage()
-        ]);
     }
-}
 
-    
-// public function agregarPedido($data)
-// {
-//     // Validar los datos recibidos
-//     if (!isset($data['nombre_usuario'], $data['estado'], $data['descripcion'], $data['id_producto'], $data['cantidad'], $data['fecha_pedido'])) {
-//         return ["error" => "Datos insuficientes para crear un pedido."];
-//     }
 
-//     // Validar si el usuario existe
-//     $usuario = $this->modelo->obtenerUsuarioPorNombre($data['nombre_usuario']);
-//     if (!$usuario) {
-//         return ["error" => "El usuario no está registrado."];
-//     }
+    public function actualizarEstadoPedido($idPedido, $nuevoEstado)
+    {
+        try {
+            $resultado = $this->modelo->actualizarEstadoPedido($idPedido, $nuevoEstado);
 
-//     // Validar si el producto existe
-//     $producto = $this->modelo->obtenerProductoPorId($data['id_producto']);
-//     if (!$producto) {
-//         return ["error" => "El producto seleccionado no existe."];
-//     }
-
-//     // Llama al modelo para agregar el pedido
-//     $resultado = $this->modelo->AgregarPedidoConMaterial(
-//         $usuario['id_usuario'], // ID del usuario
-//         $data['estado'],
-//         $data['descripcion'],
-//         $data['id_producto'],
-//         $data['cantidad'],
-//         $data['fecha_pedido']
-//     );
-
-//     if ($resultado) {
-//         return ["success" => "Pedido creado correctamente."];
-//     } else {
-//         return ["error" => "Error al crear el pedido."];
-//     }
-// }
+            echo json_encode([
+                'success' => $resultado,
+                'message' => $resultado
+                    ? 'Estado del pedido actualizado correctamente.'
+                    : 'No se encontró el pedido o el estado no cambió.'
+            ]);
+        } catch (Exception $e) {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Error al actualizar el estado del pedido: ' . $e->getMessage()
+            ]);
+        }
+    }
 }
 
 $controller = new PedidoController();
@@ -106,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         try {
             // Intentamos actualizar el estado del pedido
             $resultado = $controller->actualizarEstadoPedido($idPedido, $nuevoEstado);
-            
+
             if ($resultado) {
                 echo json_encode([
                     'success' => true,
@@ -132,30 +97,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         ]);
     }
 }
-
-
-
-// if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_GET['action'] === 'insertarPedido') {
-//     header('Content-Type: application/json');
-//     try {
-//         $data = json_decode(file_get_contents('php://input'), true);
-
-//         $material = $data['material'];
-//         $estado = $data['estado'];
-//         $descripcion = $data['descripcion'];
-//         $nombreCliente = $data['nombreCliente'];
-//         $apellidoCliente = $data['apellidoCliente'];
-//         $correoCliente = $data['correoCliente'];
-//         $cantidad = $data['cantidad'];
-
-//         // Validaciones adicionales aquí
-
-//         $pedidoModel = new Conexion(); // Asegúrate de tener esta clase
-//         $pedidoModel->AgregarPedidoConMaterial($material, $estado, $descripcion, $nombreCliente, $correoCliente, $cantidad);
-
-//         echo json_encode(['success' => true, 'message' => 'Pedido insertado correctamente.']);
-//     } catch (Exception $e) {
-//         echo json_encode(['success' => false, 'message' => $e->getMessage()]);
-//     }
-//     exit;
-// }
