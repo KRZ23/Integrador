@@ -16,12 +16,18 @@ class RegisterController {
 
         // Validación de formato de correo
         if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
-            return "Correo no válido";
+            return '<script>
+            alert("Correo Invalido.");
+            window.location.href = "../views/RegistroView.php";
+        </script>';
         }
 
         // Verificación de DNI
         if (!preg_match("/^[0-9]{8}$/", $dni)) {
-            return "DNI inválido";
+            return '<script>
+            alert("DNI INVALIDO.");
+            window.location.href = "../views/RegistroView.php";
+        </script>';
         }
 
         // Encriptar la contraseña antes de enviarla al modelo

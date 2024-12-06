@@ -140,6 +140,7 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 2) {
                     </form>
                 </div>
             </div>
+
             <div id="modalPedido" class="modal">
                 <div class="modal-content">
                     <span id="btnCerrarModalPedido" class="close">&times;</span>
@@ -158,7 +159,6 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 2) {
                         <div id="productosContainer">
                             <!-- Productos dinámicos -->
                         </div>
-                        <button type="button" id="btnAgregarProducto">Agregar Producto</button>
 
                         <button type="submit">Guardar Pedido</button>
                     </form>

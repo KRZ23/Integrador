@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Llenar la lista con los productos
             productos.forEach(producto => {
                 const listItem = document.createElement("li");
-                listItem.textContent = `${producto.nombre_producto} - $${producto.precio_producto}`;
+                listItem.textContent = `${producto.nombre_producto}`;
                 productosLista.appendChild(listItem);
             });
         } catch (error) {
