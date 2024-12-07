@@ -190,3 +190,14 @@ async function agregarPedido() {
         alert("Hubo un problema al agregar el pedido. Revisa la consola para más detalles.");
     }
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    const btnActualizarProductos = document.getElementById("btnActualizarProductos");
+
+    // Verifica si el botón existe
+    if (btnActualizarProductos) {
+        btnActualizarProductos.addEventListener("click", function () {
+            location.reload(); // Recarga la página
+        });
+    }
+});

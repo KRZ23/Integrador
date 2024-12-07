@@ -65,6 +65,7 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 2) {
             <section id="productos" class="section">
                 <h2>Gestión de Productos</h2>
                 <button id="btnAbrirModal">Agregar Producto</button>
+                <button id="btnActualizarProductos">Actualizar Productos</button>
                 <table class="table">
                     <thead>
                         <tr>
@@ -75,6 +76,7 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 2) {
                             <th>Precio</th>
                             <th>Categoría</th>
                             <th>Stock</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="productos-table-body">

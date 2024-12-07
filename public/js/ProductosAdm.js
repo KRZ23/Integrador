@@ -113,6 +113,24 @@ function crearFilaProducto(producto) {
     colStock.textContent = producto.stock;
     fila.appendChild(colStock);
 
+    // Columna de acciones (editar y eliminar)
+    const colAcciones = document.createElement("td");
+
+    const btnEditar = document.createElement("button");
+    btnEditar.textContent = "Editar";
+    btnEditar.classList.add("btn-editar");
+    btnEditar.addEventListener("click", () => abrirModalEditarProducto(producto.id));
+    colAcciones.appendChild(btnEditar);
+
+    const btnEliminar = document.createElement("button");
+    btnEliminar.textContent = "Eliminar";
+    btnEliminar.classList.add("btn-eliminar");
+    btnEliminar.addEventListener("click", () => eliminarProducto(producto.id));
+    colAcciones.appendChild(btnEliminar);
+
+    fila.appendChild(colAcciones);
+
+
     return fila;
 }
 
