@@ -130,7 +130,6 @@ function crearFilaProducto(producto) {
 
     fila.appendChild(colAcciones);
 
-
     return fila;
 }
 
@@ -145,7 +144,6 @@ fetch('/src/Controller/ProductosController.php')
         console.error("Error al cargar productos:", error);
         mostrarProductosEnTabla([]); // Mostrar un placeholder si hay error
     });
-
 
 const modal = document.getElementById("modalProducto");
 const openModalBtn = document.getElementById("btnAbrirModal");

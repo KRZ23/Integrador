@@ -18,8 +18,23 @@ document.querySelectorAll('.sidebar a').forEach(link => {
 
 // Botón de logout
 document.getElementById('logout-btn').addEventListener('click', () => {
-    alert("Cerrando sesión...");
+    fetch('../../src/Controller/LogOut.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            alert("Sesión cerrada correctamente.");
+            window.location.href = '/login'; 
+        } else {
+            alert("Error al cerrar sesión.");
+        }
+    })
+    .catch(error => console.error('Error:', error));
 });
+
 
 // Generar reporte (provisional)
 document.getElementById('generate-report-btn').addEventListener('click', () => {
@@ -27,7 +42,7 @@ document.getElementById('generate-report-btn').addEventListener('click', () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    const productosLista = document.getElementById("productos-lista");
+    const productosLista = document.getElementById("productos-table-body");
 
     // Función para cargar los productos
     async function cargarProductos() {

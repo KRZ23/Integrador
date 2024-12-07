@@ -39,7 +39,7 @@
           <a class="nav-link" href="#">Contacto</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="../views/LoginView.php">Cerrar Sesión</a>
+          <a class="nav-link" href="/index.php">Cerrar Sesión</a>
         </li>
       </ul>
     </div>
