@@ -1,0 +1,56 @@
+/* Reset básico */
+body, h1, p {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilo general del body */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f8f9fa; /* Fondo claro */
+    color: #333; /* Texto oscuro */
+    text-align: center;
+}
+
+/* Contenedor principal */
+.container {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 90%;
+}
+
+/* Título */
+.container h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #007bff; /* Azul corporativo */
+}
+
+/* Imagen QR */
+.qr-container {
+    margin: 20px 0;
+}
+
+#qr-image {
+    max-width: 100%;
+    height: auto;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Texto adicional */
+.container p {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-top: 10px;
+    color: #555;
+}

@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 2) {
+    header("Location: ../views/LoginView.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,6 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard de Administración</title>
     <link rel="stylesheet" href="../../public/css/StyleDashBoardView.css">
+    <link rel="stylesheet" href="../../public/css/StyleModal.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
@@ -56,7 +64,8 @@
 
             <section id="productos" class="section">
                 <h2>Gestión de Productos</h2>
-                <button id="add-product-btn"><i class="fa-solid fa-plus"></i> Añadir Producto</button>
+                <button id="btnAbrirModal">Agregar Producto</button>
+                <button id="btnActualizarProductos">Actualizar Productos</button>
                 <table class="table">
                     <thead>
                         <tr>
@@ -66,6 +75,8 @@
                             <th>Descripción</th>
                             <th>Precio</th>
                             <th>Categoría</th>
+                            <th>Stock</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="productos-table-body">
@@ -83,17 +94,17 @@
             </section>
 
             <section id="pedidos" class="section">
-                <button id="abrirModal" class="btn btn-primary">Agregar Pedido</button>
+                <h2>Gestión de Pedidos</h2>
+                <button id="btnAbrirModalPedido">Agregar Pedido</button>
                 <table class="table">
                     <thead>
                         <tr>
                             <th>ID Pedido</th>
-                            <th>Material</th>
-                            <th>Estado</th>
+                            <th>Cliente</th>
+                            <th>Correo</th>
+                            <th>Productos</th>
                             <th>Descripción</th>
-                            <th>Nombre del cliente</th>
-                            <th>Correo del cliente</th>
-                            <th>Cantidad Pedida</th>
+                            <th>Estado</th>
                             <th>Fecha</th>
                         </tr>
                     </thead>
@@ -103,59 +114,58 @@
                 </table>
             </section>
 
-            <dialog id="modalFormulario" class="rounded-3 shadow-lg">
-                <form id="formPedido" class="p-4">
-                    <h3 class="text-center mb-4">Registrar Nuevo Pedido</h3>
 
-                    <!-- Campo para la fecha del pedido -->
-                    <div class="mb-3">
-                        <label for="fechaPedido" class="form-label">Fecha del Pedido:</label>
-                        <input type="date" id="fechaPedido" name="fechaPedido" class="form-control" required>
-                    </div>
+            <div id="modalProducto" class="modal">
+                <div class="modal-content">
+                    <span id="btnCerrarModal" class="close">&times;</span>
+                    <h2>Agregar Producto</h2>
+                    <form id="formularioProducto" enctype="multipart/form-data">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" id="nombre" name="nombre" required>
 
-                    <!-- Otros campos del pedido -->
-                    <div class="mb-3">
-                        <label for="material" class="form-label">Material:</label>
-                        <input type="text" id="material" name="material" class="form-control" required>
-                    </div>
+                        <label for="descripcion">Descripción:</label>
+                        <textarea id="descripcion" name="descripcion" required></textarea>
 
-                    <div class="mb-3">
-                        <label for="estado" class="form-label">Estado:</label>
-                        <select id="estado" name="estado" class="form-select" required>
-                            <option value="Pendiente">Pendiente</option>
-                            <option value="En proceso">En proceso</option>
-                            <option value="Listo para entrega">Listo para entrega</option>
-                            <option value="Entregado">Entregado</option>
+                        <label for="precio">Precio:</label>
+                        <input type="number" id="precio" name="precio" step="0.01" required>
+
+                        <label for="categoria">Categoría:</label>
+                        <input type="text" id="categoria" name="categoria" required>
+
+                        <label for="stock">Stock:</label>
+                        <input type="number" id="stock" name="stock" required>
+
+                        <label for="imagen">Imagen:</label>
+                        <input type="file" id="imagen" name="imagen" accept=".png, .jpg, .jpeg, .webp" required>
+
+                        <button type="submit">Agregar Producto</button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="modalPedido" class="modal">
+                <div class="modal-content">
+                    <span id="btnCerrarModalPedido" class="close">&times;</span>
+                    <h2>Agregar Pedido</h2>
+                    <form id="formularioPedido">
+                        <label for="usuario">Usuario:</label>
+                        <select id="usuario" name="usuario" required>
+                            <!-- Opciones dinámicas cargadas desde la base de datos -->
                         </select>
-                    </div>
 
-                    <div class="mb-3">
-                        <label for="descripcion" class="form-label">Descripción:</label>
-                        <textarea id="descripcion" name="descripcion" class="form-control" required></textarea>
-                    </div>
+                        <label for="fecha_pedido">Fecha del Pedido:</label>
+                        <input type="datetime-local" id="fecha_pedido" required>
 
-                    <div class="mb-3">
-                        <label for="nombreCliente" class="form-label">Nombre del cliente:</label>
-                        <input type="text" id="nombreCliente" name="nombreCliente" class="form-control" required>
-                    </div>
+                        <label for="desc_pedido">Descripción:</label>
+                        <input type="text" id="desc_pedido" required>
+                        <div id="productosContainer">
+                            <!-- Productos dinámicos -->
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="correoCliente" class="form-label">Correo del cliente:</label>
-                        <input type="email" id="correoCliente" name="correoCliente" class="form-control" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="cantidad" class="form-label">Cantidad pedida:</label>
-                        <input type="number" id="cantidad" name="cantidad" class="form-control" min="1" required>
-                    </div>
-
-                    <div class="d-flex justify-content-between">
-                        <button type="submit" class="btn btn-success">Guardar</button>
-                        <button type="button" id="cerrarModal" class="btn btn-secondary">Cancelar</button>
-                    </div>
-                </form>
-            </dialog>
-
+                        <button type="submit">Guardar Pedido</button>
+                    </form>
+                </div>
+            </div>
         </main>
     </div>
 

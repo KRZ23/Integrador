@@ -1,12 +1,13 @@
 // Clase ProductoReal para manejar productos existentes
 class ProductoReal {
-    constructor(id, nombre, descripcion, precio, imagen, categoria) {
+    constructor(id, nombre, descripcion, precio, imagen, categoria, stock) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
         this.imagen = imagen;
         this.categoria = categoria;
+        this.stock = stock;
     }
 }
 
@@ -19,6 +20,7 @@ class ProductoPlaceholder {
         this.precio = "N/A";
         this.imagen = "/src/views/img/FotosProducto/img.webp";
         this.categoria = "N/A";
+        this.stock = 'N/A';
     }
 }
 
@@ -32,7 +34,8 @@ class ProductoFactory {
                 data.descripcion_producto,
                 data.precio_producto,
                 data.imagen,
-                data.id_categoria
+                data.id_categoria,
+                data.stock,
             );
         } else {
             return new ProductoPlaceholder();
@@ -76,7 +79,7 @@ function crearFilaProducto(producto) {
     const imagen = new Image();
     imagen.src = producto.imagen;
     imagen.alt = producto.nombre;
-    imagen.style.maxWidth = "100px"; // Ajustar tamaño de imagen
+    imagen.style.maxWidth = "150px"; // Ajustar tamaño de imagen
     imagen.onerror = () => (imagen.src = "/src/views/img/FotosProducto/img.webp"); // Placeholder en caso de error
     colImagen.appendChild(imagen);
     fila.appendChild(colImagen);
@@ -106,6 +109,27 @@ function crearFilaProducto(producto) {
     colCategoria.textContent = producto.categoria;
     fila.appendChild(colCategoria);
 
+    const colStock = document.createElement("td");
+    colStock.textContent = producto.stock;
+    fila.appendChild(colStock);
+
+    // Columna de acciones (editar y eliminar)
+    const colAcciones = document.createElement("td");
+
+    const btnEditar = document.createElement("button");
+    btnEditar.textContent = "Editar";
+    btnEditar.classList.add("btn-editar");
+    btnEditar.addEventListener("click", () => abrirModalEditarProducto(producto.id));
+    colAcciones.appendChild(btnEditar);
+
+    const btnEliminar = document.createElement("button");
+    btnEliminar.textContent = "Eliminar";
+    btnEliminar.classList.add("btn-eliminar");
+    btnEliminar.addEventListener("click", () => eliminarProducto(producto.id));
+    colAcciones.appendChild(btnEliminar);
+
+    fila.appendChild(colAcciones);
+
     return fila;
 }
 
@@ -120,3 +144,44 @@ fetch('/src/Controller/ProductosController.php')
         console.error("Error al cargar productos:", error);
         mostrarProductosEnTabla([]); // Mostrar un placeholder si hay error
     });
+
+const modal = document.getElementById("modalProducto");
+const openModalBtn = document.getElementById("btnAbrirModal");
+const closeModalBtn = document.getElementById("btnCerrarModal");
+
+openModalBtn.addEventListener("click", () => {
+    modal.style.display = "block";
+});
+
+closeModalBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+});
+
+// Manejo del envío del formulario
+document.querySelector("#formularioProducto").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(this); // Crear FormData para incluir la imagen
+
+    try {
+        const response = await fetch("/src/Controller/ProductosController.php?action=agregar", {
+            method: "POST",
+            body: formData,
+        });
+
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+        const data = await response.json();
+
+        if (data.error) {
+            alert(`Error: ${data.error}`);
+        } else if (data.success) {
+            alert(data.success);
+            this.reset(); // Limpiar el formulario
+            modal.style.display = "none"; // Cerrar modal tras éxito
+        }
+    } catch (error) {
+        console.error("Error al agregar el producto:", error);
+        alert("Ocurrió un error al procesar tu solicitud.");
+    }
+});

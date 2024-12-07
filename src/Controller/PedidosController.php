@@ -5,22 +5,76 @@ error_reporting(E_ALL);
 
 include '../models/conexion.php';
 
-class PedidoController {
+class PedidoController
+{
     private $modelo;
 
-    public function __construct() {
-        $this->modelo = new Conexion(); 
+    public function __construct()
+    {
+        $this->modelo = new Conexion();
     }
 
-    public function obtenerPedidos() {
+    public function obtenerPedidos()
+    {
         try {
             $pedidos = $this->modelo->obtenerPedidos();
-            if (empty($pedidos)) {
-                throw new Exception("No se encontraron pedidos.");
-            }
             echo json_encode([
                 'success' => true,
-                'data' => $pedidos
+                'pedidos' => $pedidos
+            ]);
+        } catch (Exception $e) {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Error al obtener los pedidos: ' . $e->getMessage()
+            ]);
+        }
+    }
+
+
+    public function actualizarEstadoPedido($idPedido, $nuevoEstado)
+    {
+        try {
+            $resultado = $this->modelo->actualizarEstadoPedido($idPedido, $nuevoEstado);
+
+            echo json_encode([
+                'success' => $resultado,
+                'message' => $resultado
+                    ? 'Estado del pedido actualizado correctamente.'
+                    : 'No se encontró el pedido o el estado no cambió.'
+            ]);
+        } catch (Exception $e) {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Error al actualizar el estado del pedido: ' . $e->getMessage()
+            ]);
+        }
+    }
+
+    public function agregarPedido() {
+        try {
+            $data = json_decode(file_get_contents("php://input"), true);
+
+            $idUsuario = $data['usuario'] ?? null;
+            $fechaPedido = $data['fecha_pedido'] ?? null;
+            $estadoMaterial = $data['estado_material'] ?? 'Pendiente'; // Estado predeterminado
+            $descPedido = $data['desc_pedido'] ?? null;
+            $idProducto = $data['producto'] ?? null;
+            $cantidad = $data['cantidad'] ?? null;
+
+            if (!$idUsuario || !$fechaPedido || !$descPedido || !$idProducto || !$cantidad) {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Todos los campos son obligatorios.'
+                ]);
+                return;
+            }
+
+            $pedidoModel = new Conexion();
+            $pedidoModel->insertarPedidoConProductos($idUsuario, $fechaPedido, $estadoMaterial, $descPedido, $idProducto, $cantidad);
+
+            echo json_encode([
+                'success' => true,
+                'message' => 'Pedido agregado exitosamente.'
             ]);
         } catch (Exception $e) {
             echo json_encode([
@@ -29,10 +83,31 @@ class PedidoController {
             ]);
         }
     }
+}
 
-    public function actualizarEstadoPedido($idPedido, $nuevoEstado) {
+if ($_GET['action'] === 'agregar') {
+    $controller->agregarPedido($_POST);
+}
+$controller = new PedidoController();
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $action = $_GET['action'] ?? null; // Uso de null coalescing operator
+    if ($action === 'fetch') {
+        $controller->obtenerPedidos();
+    } else {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Accion no valida en la solicitud GET.'
+        ]);
+    }
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $data = json_decode(file_get_contents('php://input'), true);
+    $idPedido = $data['idPedido'] ?? null;
+    $nuevoEstado = $data['nuevoEstado'] ?? null;
+
+    if ($idPedido && $nuevoEstado) {
         try {
-            $resultado = $this->modelo->actualizarEstadoPedido($idPedido, $nuevoEstado);
+            $resultado = $controller->actualizarEstadoPedido($idPedido, $nuevoEstado);
+
             if ($resultado) {
                 echo json_encode([
                     'success' => true,
@@ -41,80 +116,20 @@ class PedidoController {
             } else {
                 echo json_encode([
                     'success' => false,
-                    'message' => 'No se pudo actualizar el estado del pedido'
+                    'message' => 'No se pudo actualizar el estado del pedido. Verifique el ID del pedido.'
                 ]);
             }
         } catch (Exception $e) {
+            // Capturamos cualquier error que ocurra durante la actualización
             echo json_encode([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => 'Error al actualizar el estado del pedido: ' . $e->getMessage()
             ]);
         }
-    }
-    public function agregarPedido($data)
-    {
-        // Validar los datos recibidos
-        if (!isset($data['id_usuario'], $data['estado_material'], $data['descripcion'], $data['id_material'], $data['cantidad_pedido'],$data['fecha_pedido'])) {
-            return ["error" => "Datos insuficientes para crear un pedido."];
-        }
-
-        // Llama al modelo para agregar el pedido
-        $resultado = $this->modelo->AgregarPedidoConMaterial(
-            $data['id_usuario'],
-            $data['estado_material'],
-            $data['descripcion'],
-            $data['id_material'],
-            $data['cantidad_pedido'],
-            $data['fecha_pedido']
-        );
-
-        if ($resultado) {
-            return ["success" => "Pedido creado correctamente."];
-        } else {
-            return ["error" => "Error al crear el pedido."];
-        }
-    }
-}
-
-$controller = new PedidoController();
-
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'fetch') {
-    $controller->obtenerPedidos();
-} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $data = json_decode(file_get_contents('php://input'), true);
-    $idPedido = $data['idPedido'] ?? null;
-    $nuevoEstado = $data['nuevoEstado'] ?? null;
-
-    if ($idPedido && $nuevoEstado) {
-        $controller->actualizarEstadoPedido($idPedido, $nuevoEstado);
     } else {
         echo json_encode([
             'success' => false,
             'message' => 'Faltan datos para actualizar el estado del pedido'
         ]);
     }
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_GET['action'] === 'insertarPedido') {
-    header('Content-Type: application/json');
-    try {
-        $data = json_decode(file_get_contents('php://input'), true);
-
-        $material = $data['material'];
-        $estado = $data['estado'];
-        $descripcion = $data['descripcion'];
-        $nombreCliente = $data['nombreCliente'];
-        $correoCliente = $data['correoCliente'];
-        $cantidad = $data['cantidad'];
-
-        // Validaciones adicionales aquí
-
-        $pedidoModel = new Conexion(); // Asegúrate de tener esta clase
-        $pedidoModel->AgregarPedidoConMaterial($material, $estado, $descripcion, $nombreCliente, $correoCliente, $cantidad);
-
-        echo json_encode(['success' => true, 'message' => 'Pedido insertado correctamente.']);
-    } catch (Exception $e) {
-        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
-    }
-    exit;
 }

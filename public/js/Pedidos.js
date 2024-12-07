@@ -10,12 +10,16 @@ class PedidoAPI {
 
     async fetchPedidos() {
         try {
-            const response = await fetch(`${this.baseURL}?action=fetch`);
-            if (!response.ok) throw new Error('Error al obtener los pedidos');
-            const data = await response.json();
-            return data.data || [];
+            const response = await fetch(this.baseURL + '?action=fetch');
+            const result = await response.json();
+            if (result.success) {
+                return result.pedidos;
+            } else {
+                console.error('Error al obtener los pedidos:', result.message);
+                return [];
+            }
         } catch (error) {
-            console.error(error);
+            console.error('Error en la solicitud al obtener pedidos:', error);
             return [];
         }
     }
@@ -28,21 +32,28 @@ class PedidoAPI {
                 body: JSON.stringify({ idPedido, nuevoEstado }),
             });
             const result = await response.json();
+            if (!result.success) {
+                console.error('Error al actualizar el estado:', result.message);
+            }
             return result.success;
         } catch (error) {
-            console.error('Error al actualizar el estado:', error);
+            console.error('Error en la solicitud al actualizar estado:', error);
             return false;
         }
     }
+    
+    
 }
-
 
 class ElementFactory {
     static createTableRow(pedido) {
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td>${pedido.id_pedido}</td>
-            <td>${pedido.nombre_material || 'Sin asignar'}</td>
+            <td>${pedido.usuario || 'Sin asignar'}</td>
+            <td>${pedido.correo || 'Sin asignar'}</td>
+            <td>${pedido.nombre_producto || 'Sin productos asignados'}</td>
+            <td>${pedido.desc_pedido || 'Sin descripción'}</td>
             <td>
                 <select data-id="${pedido.id_pedido}" class="estado-select">
                     <option value="Pendiente" ${pedido.estado_material === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
@@ -51,15 +62,12 @@ class ElementFactory {
                     <option value="Entregado" ${pedido.estado_material === 'Entregado' ? 'selected' : ''}>Entregado</option>
                 </select>
             </td>
-            <td>${pedido.desc_pedido}</td>
-            <td>${pedido.nombre_usuario} ${pedido.apellido_usuario}</td>
-            <td>${pedido.correo_usuario}</td>
-            <td>${pedido.cantidad_pedido || 'Sin asignar'} cubos </td>
-            <td>${pedido.fecha_pedido}</td>
+            <td>${pedido.fecha_pedido || 'Sin fecha registrada'}</td>
         `;
         return tr;
     }
 }
+
 
 // Observer para manejar actualizaciones dinámicas en la vista
 class PedidoObserver {
@@ -91,21 +99,32 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Manejo del cambio de estado
     tbody.addEventListener('change', async (event) => {
         if (event.target.classList.contains('estado-select')) {
             const idPedido = event.target.dataset.id;
             const nuevoEstado = event.target.value;
-
-            const exito = await api.actualizarEstado(idPedido, nuevoEstado);
-            if (!exito) {
-                alert('Error al actualizar el estado. Inténtalo de nuevo.');
-                return;
+    
+            try {
+                const response = await api.actualizarEstado(idPedido, nuevoEstado);
+    
+                if (response.success) {
+                    alert(`No se pudo actualizar el estado. Detalle: ${response.message}`);
+                    // alert(`Estado del pedido ${idPedido} actualizado a ${nuevoEstado}`);
+                } else {
+                    alert(`Estado del pedido ${idPedido} actualizado a ${nuevoEstado}`);
+                    // alert(`No se pudo actualizar el estado. Detalle: ${response.message}`);
+                }
+            } catch (error) {
+                console.error('Error en la solicitud:', error);
+                alert('Error al procesar la solicitud. Inténtalo nuevamente.');
             }
-            alert(`Estado del pedido ${idPedido} actualizado a ${nuevoEstado}`);
-            cargarPedidos(); // Recargar pedidos
+    
+            // Actualizar la tabla después de la operación
+            cargarPedidos();
         }
     });
+
+    
 
     // Cargar pedidos al inicio
     async function cargarPedidos() {
