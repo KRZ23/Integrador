@@ -139,7 +139,7 @@
             </div>
         </div>
 
-        <a href="contacto.html" class="boton1">CONTÁCTANOS</a>
+        <a href="/src/views/ContactoView.php" class="boton1">CONTÁCTANOS</a>
     </section>
 
     <footer class="footer">

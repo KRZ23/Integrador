@@ -142,6 +142,7 @@ class Conexion
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    
     public function actualizarProducto($idProducto, $nombre, $descripcion, $precio, $categoria, $stock, $imagenPath = null)
     {
         try {
