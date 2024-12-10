@@ -27,7 +27,7 @@ document.getElementById('logout-btn').addEventListener('click', () => {
     .then(response => {
         if (response.ok) {
             alert("Sesión cerrada correctamente.");
-            window.location.href = '/login'; 
+            window.location.href = '../../index.php'; 
         } else {
             alert("Error al cerrar sesión.");
         }

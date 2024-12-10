@@ -39,10 +39,11 @@
           <a class="nav-link" href="#">Contacto</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/index.php">Cerrar Sesión</a>
+          <button id="nav-link"><i class="fa-solid fa-sign-out-alt"></i> Cerrar Sesión</button>
         </li>
       </ul>
     </div>
   </div>
 </nav>
 
+<script src="../../public/js/ControladorLogOut.js"></script>

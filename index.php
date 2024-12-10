@@ -19,7 +19,7 @@
 
             <nav class="navbar">
                 <ul>
-                    <li><a href="/src/views/LoginView.php">Productos</a></li>
+                    <li><a href="/src/views/VentasView.php">Productos</a></li>
                     <li><a href="/src/views/ContactoView.php">Contáctanos</a></li>
                     <li><a href="/src/views/LoginView.php">Iniciar Sesion</a></li>
                 </ul>
