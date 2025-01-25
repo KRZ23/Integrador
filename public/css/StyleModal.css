@@ -90,3 +90,7 @@ button[type="submit"] {
     background-color: #4CAF50;
     color: white;
 }
+
+.modal-backdrop {
+    filter: none !important; /* Eliminar el blur */
+}

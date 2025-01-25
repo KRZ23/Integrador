@@ -1,4 +1,3 @@
-// Clase ProductoReal para manejar productos existentes
 class ProductoReal {
     constructor(id, nombre, descripcion, precio, imagen, categoria, stock) {
         this.id = id;
@@ -73,6 +72,7 @@ function mostrarProductosEnTabla(productos) {
 // Función para crear una fila de la tabla
 function crearFilaProducto(producto) {
     const fila = document.createElement("tr");
+    fila.setAttribute('data-id', producto.id);
 
     // Columna de imagen
     const colImagen = document.createElement("td");
@@ -109,6 +109,7 @@ function crearFilaProducto(producto) {
     colCategoria.textContent = producto.categoria;
     fila.appendChild(colCategoria);
 
+    // Columna de stock
     const colStock = document.createElement("td");
     colStock.textContent = producto.stock;
     fila.appendChild(colStock);
@@ -119,18 +120,72 @@ function crearFilaProducto(producto) {
     const btnEditar = document.createElement("button");
     btnEditar.textContent = "Editar";
     btnEditar.classList.add("btn-editar");
-    btnEditar.addEventListener("click", () => abrirModalEditarProducto(producto.id));
+    btnEditar.dataset.idProducto = producto.id; // Asignar el ID al atributo data
+    btnEditar.addEventListener('click', () => editarProducto(producto.id));
     colAcciones.appendChild(btnEditar);
 
     const btnEliminar = document.createElement("button");
     btnEliminar.textContent = "Eliminar";
     btnEliminar.classList.add("btn-eliminar");
-    btnEliminar.addEventListener("click", () => eliminarProducto(producto.id));
+    btnEliminar.dataset.idProducto = producto.id; // Asignar el ID al atributo data
+    btnEliminar.addEventListener('click', () => eliminarProducto(producto.id));
     colAcciones.appendChild(btnEliminar);
 
     fila.appendChild(colAcciones);
 
     return fila;
+}
+
+// Función para eliminar el producto
+// function eliminarProducto(idProducto) {
+//     // Aquí iría la lógica para eliminar el producto, por ejemplo:
+//     alert(`Eliminando producto con ID: ${idProducto}`);
+//     console.log(`Eliminando producto con ID: ${idProducto}`);
+//     // Llamada a una API o acción de backend para eliminarlo
+//     document.addEventListener("click", function (event) {
+//         if (event.target.classList.contains("btn-eliminar")) {
+//             const idProducto = event.target.dataset.idProducto;
+//             if (confirm("¿Estás seguro de que deseas desactivar este producto?")) {
+//                 eliminarProducto(idProducto);
+//             }
+//         }
+//     });
+// }
+
+function eliminarProducto(idProducto) {
+    fetch('../../src/Controller/ElminarProductosController.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            id_producto: idProducto,
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert(data.message); // Muestra el mensaje de éxito
+            // Elimina la fila correspondiente del producto en la tabla
+            const fila = document.querySelector(`tr[data-id="${idProducto}"]`);
+            if (fila) {
+                fila.remove();
+            }
+        } else {
+            alert(`Error: ${data.message}`);
+        }
+    })
+    .catch(error => {
+        console.error('Error al procesar la solicitud:', error);
+        alert('Error de conexión con el servidor.');
+    });
+}
+// Función para editar el producto
+function editarProducto(idProducto) {
+    // Aquí iría la lógica para editar el producto, por ejemplo:
+    alert(`Editando producto con ID: ${idProducto}`);
+    console.log(`Editando producto con ID: ${idProducto}`);
+    // Llamada a una página de edición o abrir un formulario
 }
 
 // Llamada a la API para cargar los productos
@@ -185,3 +240,115 @@ document.querySelector("#formularioProducto").addEventListener("submit", async f
         alert("Ocurrió un error al procesar tu solicitud.");
     }
 });
+
+document.addEventListener('click', (event) => {
+    // Botón de editar
+    if (event.target.classList.contains('btn-editar')) {
+        const idProducto = event.target.dataset.idProducto;
+        abrirModalEditarProducto(idProducto);
+    }
+
+    // // Botón de eliminar
+    // if (event.target.classList.contains('btn-eliminar')) {
+    //     const idProducto = event.target.dataset.idProducto;
+    //     eliminarProducto(idProducto);
+    // }
+});
+
+// Abrir modal para editar producto
+async function abrirModalEditarProducto(idProducto) {
+    try {
+        const response = await fetch(`../../src/Controller/ProductosController.php?action=editar=${idProducto}`);
+        const producto = await response.json();
+
+        if (producto) {
+            // Rellenar el formulario con los datos del producto
+            document.getElementById('id_producto').value = producto.id_producto;
+            document.getElementById('nombre_producto').value = producto.nombre_producto;
+            document.getElementById('descripcion_producto').value = producto.descripcion_producto;
+            document.getElementById('precio_producto').value = producto.precio_producto;
+            document.getElementById('id_categoria').value = producto.id_categoria;
+            document.getElementById('stock').value = producto.stock;
+
+            // Mostrar el modal
+            document.getElementById('modal-editar-producto').style.display = 'block';
+        } else {
+            alert('Error al obtener los datos del producto.');
+        }
+    } catch (error) {
+        console.error('Error al abrir el modal:', error);
+    }
+}
+
+// Función para cerrar el modal
+function cerrarModal() {
+    document.getElementById('modal-editar-producto').style.display = 'none';
+}
+
+// Previene el envío del formulario y realiza la acción que desees al guardar cambios
+document.getElementById('form-editar-producto').addEventListener('submit', function (event) {
+    event.preventDefault();
+    // Aquí puedes agregar la lógica para guardar los cambios
+    alert('Cambios guardados.');
+    cerrarModal();
+});
+
+
+// Método para eliminar un producto de manera lógica
+// function eliminarProducto(idProducto) {
+//     fetch("../../src/Controller/ProductosController.php", {
+//         method: "POST",
+//         headers: {
+//             "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify({ action: "eliminar_logico", id_producto: idProducto }),
+//     })
+//         .then((response) => {
+//             if (!response.ok) {
+//                 throw new Error("Error en la respuesta del servidor.");
+//             }
+//             return response.json(); // Convertir la respuesta a JSON
+//         })
+//         .then((data) => {
+//             if (data.success) {
+//                 const fila = document.querySelector(`tr[data-id-producto='${idProducto}']`);
+//                 if (fila) fila.remove(); // Eliminar la fila de la tabla si existe
+//                 alert("Producto desactivado correctamente.");
+//             } else {
+//                 alert("Error al desactivar el producto: " + data.message);
+//             }
+//         })
+//         .catch((error) => {
+//             console.error("Error al desactivar el producto:", error);
+//             alert("Ocurrió un error al intentar desactivar el producto.");
+//         });
+// }
+
+// const eliminarProducto = async (idProducto) => {
+//     try {
+//         const response = await fetch('../../src/Controller/ProductosController.php', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify({
+//                 action: 'eliminar_logico',
+//                 id_producto: idProducto,
+//             }),
+//         });
+
+//         const data = await response.json();
+//         if (data.success) {
+//             alert(data.message);  // Muestra el mensaje correcto
+//         } else {
+//             alert(`Error: ${data.message}`);
+//         }
+//     } catch (error) {
+//         console.error('Error al eliminar producto:', error);
+//         alert('No se pudo procesar la solicitud.');
+//     }
+// };
+
+// Asignar eventos a los botones de eliminar (manejo dinámico)
+
+

@@ -29,8 +29,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 case 2: // Rol administrador
                     header("Location: ../views/DashBoarView.php");
                     break;
-                case 3: // Rol guardia
-                    header("Location: ../views/customerDashboard.php");
+                case 3: // Conductor
+                    header("Location: ../views/");
+                    break;
+                case 4: // Seguridad
+                    header("Location: ../views/SeguridadView.php");
                     break;
                 default:
                     echo "Rol no reconocido.";
@@ -55,4 +58,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ';
     }
 }
-?>

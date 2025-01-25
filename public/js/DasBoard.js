@@ -62,13 +62,11 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         } catch (error) {
             console.error(error);
-            productosLista.innerHTML = "<li>Error al cargar los productos.</li>";
+            productosLista.innerHTML = "<li> Error al cargar los productos.</li>";
         }
     }
-
-    // Llamar a la función para cargar los productos
-    cargarProductos();
 });
+
 const modalPedido = document.getElementById("modalPedido");
 const openModalPedidoBtn = document.getElementById("btnAbrirModalPedido");
 const closeModalPedidoBtn = document.getElementById("btnCerrarModalPedido");

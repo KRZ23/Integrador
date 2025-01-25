@@ -32,7 +32,7 @@ class ProductosController
             echo json_encode(['error' => 'Error al obtener los productos', 'mensaje' => $e->getMessage()]);
         }
     }
-    
+
     public function procesarImagen($archivoImagen)
     {
         try {

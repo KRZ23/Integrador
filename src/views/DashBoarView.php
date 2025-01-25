@@ -4,6 +4,8 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 2) {
     header("Location: ../views/LoginView.php");
     exit();
 }
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,6 +17,7 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 2) {
     <link rel="stylesheet" href="../../public/css/StyleDashBoardView.css">
     <link rel="stylesheet" href="../../public/css/StyleModal.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="shortcut icon" href="img/FotosProducto/Logo.webp">
 </head>
 
 <body>
@@ -166,6 +169,52 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 2) {
                     </form>
                 </div>
             </div>
+
+            <!-- Modal sin Bootstrap -->
+            <div class="modal" id="modal-editar-producto">
+                <div class="modal-content">
+                    <form id="form-editar-producto">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Editar Producto</h5>
+                            <button type="button" class="close" onclick="cerrarModal()"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="id_producto" name="id_producto">
+                            <div class="mb-3">
+                                <label for="nombre_producto" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="nombre_producto" name="nombre_producto">
+                            </div>
+                            <div class="mb-3">
+                                <label for="descripcion_producto" class="form-label">Descripción</label>
+                                <textarea class="form-control" id="descripcion_producto" name="descripcion_producto"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="precio_producto" class="form-label">Precio</label>
+                                <input type="number" class="form-control" id="precio_producto" name="precio_producto" step="0.01">
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_categoria" class="form-label">Categoría</label>
+                                <select class="form-control" id="id_categoria" name="id_categoria">
+                                    <!-- Opciones de categorías -->
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="stock" class="form-label">Stock</label>
+                                <input type="number" class="form-control" id="stock" name="stock">
+                            </div>
+                            <div class="mb-3">
+                                <label for="imagen" class="form-label">Imagen</label>
+                                <input type="file" class="form-control" id="imagen" name="imagen">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                            <button type="button" class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
         </main>
     </div>
 
@@ -173,6 +222,7 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 2) {
     <script src="../../public/js/Pedidos.js"></script>
     <script src="../../public/js/Usuarios.js"></script>
     <script src="../../public/js/ProductosAdm.js"></script>
+    <script src="../../public/js/bootstrap_js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

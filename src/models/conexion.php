@@ -57,11 +57,38 @@ class Conexion
         }
     }
 
+    // public function getProductos()
+    // {
+    //     try {
+    //         // Preparar la consulta SQL
+    //         $stmt = $this->conn->prepare("
+    //             SELECT
+    //                 id_producto, 
+    //                 nombre_producto, 
+    //                 descripcion_producto, 
+    //                 precio_producto, 
+    //                 imagen, 
+    //                 id_categoria,
+    //                 stock
+    //             FROM bd_piedradeagua.productos
+    //         ");
+
+    //         // Ejecutar la consulta
+    //         $stmt->execute();
+
+    //         // Retornar los productos como un array asociativo
+    //         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    //     } catch (PDOException $e) {
+    //         // Registrar el error o devolver un array vacío
+    //         error_log("Error en getProductos: " . $e->getMessage());
+    //         return [];
+    //     }
+    // }
+
     public function getProductos()
     {
         try {
-            // Preparar la consulta SQL
-            $stmt = $this->conn->prepare("
+            $sql = "
                 SELECT
                     id_producto, 
                     nombre_producto, 
@@ -69,22 +96,19 @@ class Conexion
                     precio_producto, 
                     imagen, 
                     id_categoria,
-                    stock
+                    stock,
+                    id_producto
                 FROM bd_piedradeagua.productos
-            ");
+                WHERE estado = 1";
 
-            // Ejecutar la consulta
+            $stmt = $this->conn->prepare($sql);
             $stmt->execute();
-
-            // Retornar los productos como un array asociativo
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            // Registrar el error o devolver un array vacío
             error_log("Error en getProductos: " . $e->getMessage());
             return [];
         }
     }
-
     public function agregarProducto($nombre, $descripcion, $precio, $imagen, $categoria, $stock)
     {
         try {
@@ -135,14 +159,7 @@ class Conexion
         }
     }
 
-    public function obtenerProductoPorId($idProducto) {
-        $sql = "SELECT * FROM bd_piedradeagua.productos WHERE id_producto = :id_producto";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(':id_producto', $idProducto);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-    
+
     public function actualizarProducto($idProducto, $nombre, $descripcion, $precio, $categoria, $stock, $imagenPath = null)
     {
         try {
@@ -172,21 +189,18 @@ class Conexion
         }
     }
 
-    // Método para eliminar un producto
-    public function eliminarProducto($idProducto)
+    public function eliminarProductoLogico($id)
     {
         try {
-            $sql = "DELETE FROM bd_piedradeagua.productos WHERE id_producto = :id_producto";
+            $sql = "UPDATE bd_piedradeagua.productos SET estado = 0 WHERE id_producto = :id";
             $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':id_producto', $idProducto);
-            $stmt->execute();
-
-            return ['success' => true, 'message' => 'Producto eliminado correctamente'];
-        } catch (Exception $e) {
-            return ['success' => false, 'message' => $e->getMessage()];
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Error en eliminarProductoLogico: " . $e->getMessage());
+            return false;
         }
     }
-
     public function actualizarEstadoPedido($idPedido, $nuevoEstado)
     {
         try {
@@ -302,6 +316,18 @@ class Conexion
                 'success' => false,
                 'message' => 'Error al insertar el pedido: ' . $e->getMessage()
             ];
+        }
+    }
+
+    public function obtenerVehiculos() {
+        try {
+            $sql = "SELECT id_vehiculo, placa, modelo, marca, color FROM bd_piedradeagua.vehiculo WHERE estado = 1"; // Ajusta los campos según tu tabla
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error en obtenerVehiculos: " . $e->getMessage());
+            return [];
         }
     }
 }
